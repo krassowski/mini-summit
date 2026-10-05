@@ -55,7 +55,7 @@
     },
     finish: {
       title: 'That was 7 of 68 new features',
-      body: 'How did we ship this many in one minor release?',
+      body: 'Next: the rest of the release, in numbers.',
       next: 'Finish'
     }
   };
