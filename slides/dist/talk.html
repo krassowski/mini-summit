@@ -689,8 +689,8 @@ html.print-mode, html.print-mode body { overflow: visible; height: auto; }
   position: relative;
   flex: none;
 }
-.jl.top .jl-left .jl-tabs { align-items: flex-start; }
-.jl.top .jl-left .jl-tab { width: 52px; height: 28px; }
+.jl.top .jl-left .jl-tab { width: 52px; height: auto; }
+.jl.top .jl-left .jl-tab.cur { box-shadow: 1px 0 0 var(--jp-border-color1); }
 .jl-tab.cur { background: var(--jp-layout-color1); }
 .jl-left .jl-tab.cur::after {
   /* the current tab covers the border towards its panel, as in JupyterLab */
