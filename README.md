@@ -2,7 +2,7 @@
 
 Slides, data and sources for the talk by [Mike Krassowski](https://github.com/krassowski) (OpenTeams) at the Jupyter Mini Summit.
 
-**Slides:** [`slides/dist/talk.html`](slides/dist/talk.html) (download it and open it in a browser; one file that works offline), or the PDF in [dark](slides/dist/talk.pdf) and [light](slides/dist/talk-light.pdf) versions.
+**Slides:** [krassowski.github.io/mini-summit](https://krassowski.github.io/mini-summit/) in the browser, or [`slides/dist/talk.html`](slides/dist/talk.html) to download (one file that works offline), or the PDF in [dark](slides/dist/talk.pdf) and [light](slides/dist/talk-light.pdf) versions.
 
 ## Abstract
 
@@ -51,7 +51,6 @@ On the OpenTeams engineering blog:
 
 ## Data behind the numbers
 
-- [`sources/key-facts.md`](sources/key-facts.md): every number in the slides, with its source.
 - [`sources/release-stats/`](sources/release-stats/README.md): AI usage in JupyterLab pull requests by release and by month, with the method. [`tools/ai_usage.py`](tools/ai_usage.py) recomputes it from the changelog and the pull request descriptions.
 
 ## Thanks

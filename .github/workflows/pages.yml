@@ -1,0 +1,54 @@
+# Publish the slides to GitHub Pages: the deck at the site root, and the
+# single-file deck and the PDFs under dist/ for download.
+name: Publish slides
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "slides/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions: {}
+
+# Let a deployment in progress finish; queue the next one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Assemble the site
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # check out the repository
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Assemble the site
+        run: |
+          mkdir -p _site
+          cp slides/index.html _site/index.html
+          cp -r slides/assets _site/assets
+          if [ -d slides/dist ]; then cp -r slides/dist _site/dist; fi
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write # publish the uploaded site
+      id-token: write # prove to Pages that this run is the deployer (OIDC)
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

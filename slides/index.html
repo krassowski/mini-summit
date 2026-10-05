@@ -1,0 +1,1180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JupyterLab 4.6 and Its Tooling</title>
+<meta name="description" content="Jupyter Mini Summit talk: what is new in JupyterLab 4.6, and the four Jupyter Foundation funded projects behind it (prototype, lint, build, test).">
+<link rel="stylesheet" href="assets/deck.css">
+<link rel="stylesheet" href="assets/jlab.css">
+<link rel="stylesheet" href="assets/slides.css">
+</head>
+<body>
+<!-- sprite:start -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<symbol id="i-accessibility" viewBox="0 0 24 24"><circle cx="16" cy="4" r="1" /> <path d="m18 19 1-7-6 1" /> <path d="m5 8 3-3 5.5 3-2.36 3.5" /> <path d="M4.24 14.5a5 5 0 0 0 6.88 6" /> <path d="M13.76 17.5a5 5 0 0 0-6.88-6" /></symbol>
+<symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" /></symbol>
+<symbol id="i-alarm-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8" /> <path d="M12 9v4l2 2" /> <path d="M5 3 2 6" /> <path d="m22 6-3-3" /> <path d="M6.38 18.7 4 21" /> <path d="M17.64 18.67 20 21" /></symbol>
+<symbol id="i-app-window" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" /> <path d="M10 4v4" /> <path d="M2 8h20" /> <path d="M6 4v4" /></symbol>
+<symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14" /> <path d="m19 12-7 7-7-7" /></symbol>
+<symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7" /> <path d="M19 12H5" /></symbol>
+<symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></symbol>
+<symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10" /> <path d="M7 17 17 7" /></symbol>
+<symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7" /> <path d="M12 19V5" /></symbol>
+<symbol id="i-award" viewBox="0 0 24 24"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" /> <circle cx="12" cy="8" r="6" /></symbol>
+<symbol id="i-badge-alert" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" /> <line x1="12" x2="12" y1="8" y2="12" /> <line x1="12" x2="12.01" y1="16" y2="16" /></symbol>
+<symbol id="i-badge-check" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" /> <path d="m16 9-5.5 5.5L8 12" /></symbol>
+<symbol id="i-binoculars" viewBox="0 0 24 24"><path d="M10 10h4" /> <path d="M19 7V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3" /> <path d="M20 21a2 2 0 0 0 2-2v-3.851c0-1.39-2-2.962-2-4.829V8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2z" /> <path d="M 22 16 L 2 16" /> <path d="M4 21a2 2 0 0 1-2-2v-3.851c0-1.39 2-2.962 2-4.829V8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2z" /> <path d="M9 7V4a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v3" /></symbol>
+<symbol id="i-blocks" viewBox="0 0 24 24"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2" /> <rect x="14" y="2" width="8" height="8" rx="1" /></symbol>
+<symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 5v16" /> <path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z" /></symbol>
+<symbol id="i-bot-message-square" viewBox="0 0 24 24"><path d="M12 6V2H8" /> <path d="M15 11v2" /> <path d="M2 12h2" /> <path d="M20 12h2" /> <path d="M20 16a2 2 0 0 1-2 2H8.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 4 20.286V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" /> <path d="M9 11v2" /></symbol>
+<symbol id="i-bot" viewBox="0 0 24 24"><path d="M12 8V4H8" /> <rect width="16" height="12" x="4" y="8" rx="2" /> <path d="M2 14h2" /> <path d="M20 14h2" /> <path d="M15 13v2" /> <path d="M9 13v2" /></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" /> <path d="m3.3 7 8.7 5 8.7-5" /> <path d="M12 22V12" /></symbol>
+<symbol id="i-boxes" viewBox="0 0 24 24"><path d="M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z" /> <path d="m7 16.5-4.74-2.85" /> <path d="m7 16.5 5-3" /> <path d="M7 16.5v5.17" /> <path d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z" /> <path d="m17 16.5-5-3" /> <path d="m17 16.5 4.74-2.85" /> <path d="M17 16.5v5.17" /> <path d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z" /> <path d="M12 8 7.26 5.15" /> <path d="m12 8 4.74-2.85" /> <path d="M12 13.5V8" /></symbol>
+<symbol id="i-braces" viewBox="0 0 24 24"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1" /> <path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" /></symbol>
+<symbol id="i-brain" viewBox="0 0 24 24"><path d="M12 18V5" /> <path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4" /> <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" /> <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" /> <path d="M18 18a4 4 0 0 0 2-7.464" /> <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" /> <path d="M6 18a4 4 0 0 1-2-7.464" /> <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" /></symbol>
+<symbol id="i-brush-cleaning" viewBox="0 0 24 24"><path d="m16 22-1-4" /> <path d="M19 14a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2h-3a1 1 0 0 1-1-1V4a2 2 0 0 0-4 0v5a1 1 0 0 1-1 1H6a2 2 0 0 0-2 2v1a1 1 0 0 0 1 1" /> <path d="M19 14H5l-1.973 6.767A1 1 0 0 0 4 22h16a1 1 0 0 0 .973-1.233z" /> <path d="m8 22 1-4" /></symbol>
+<symbol id="i-bug" viewBox="0 0 24 24"><path d="M12 20v-9" /> <path d="M14 7a4 4 0 0 1 4 4v3a6 6 0 0 1-12 0v-3a4 4 0 0 1 4-4z" /> <path d="M14.12 3.88 16 2" /> <path d="M21 21a4 4 0 0 0-3.81-4" /> <path d="M21 5a4 4 0 0 1-3.55 3.97" /> <path d="M22 13h-4" /> <path d="M3 21a4 4 0 0 1 3.81-4" /> <path d="M3 5a4 4 0 0 0 3.55 3.97" /> <path d="M6 13H2" /> <path d="m8 2 1.88 1.88" /> <path d="M9 7.13V6a3 3 0 1 1 6 0v1.13" /></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><path d="M12 10h.01" /> <path d="M12 14h.01" /> <path d="M12 6h.01" /> <path d="M16 10h.01" /> <path d="M16 14h.01" /> <path d="M16 6h.01" /> <path d="M8 10h.01" /> <path d="M8 14h.01" /> <path d="M8 6h.01" /> <path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" /> <rect x="4" y="2" width="16" height="20" rx="2" /></symbol>
+<symbol id="i-calendar-check" viewBox="0 0 24 24"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /> <path d="m9 15 2 2 4-4" /></symbol>
+<symbol id="i-calendar-clock" viewBox="0 0 24 24"><path d="M16 14v2.2l1.6 1" /> <path d="M16 2v3" /> <path d="M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338" /> <path d="M3 9h5.859" /> <path d="M8 2v3" /> <circle cx="16" cy="16" r="6" /></symbol>
+<symbol id="i-calendar-plus" viewBox="0 0 24 24"><path d="M16 18h6" /> <path d="M16 2v3" /> <path d="M19 15v6" /> <path d="M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3" /> <path d="M3 9h18" /> <path d="M8 2v3" /></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /> <circle cx="12" cy="13" r="3" /></symbol>
+<symbol id="i-chart-no-axes-column" viewBox="0 0 24 24"><path d="M5 21v-6" /> <path d="M12 21V3" /> <path d="M19 21V9" /></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>
+<symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6" /></symbol>
+<symbol id="i-chevrons-right" viewBox="0 0 24 24"><path d="m6 17 5-5-5-5" /> <path d="m13 17 5-5-5-5" /></symbol>
+<symbol id="i-circle-arrow-right" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="m12 16 4-4-4-4" /> <path d="M8 12h8" /></symbol>
+<symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="m16 9-5.5 5.5L8 12" /></symbol>
+<symbol id="i-circle-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="m15 9-6 6" /> <path d="m9 9 6 6" /></symbol>
+<symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /></symbol>
+<symbol id="i-clipboard-paste" viewBox="0 0 24 24"><path d="M11 14h10" /> <path d="M16 4h2a2 2 0 0 1 2 2v1.344" /> <path d="m17 18 4-4-4-4" /> <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 1.793-1.113" /> <rect x="8" y="2" width="8" height="4" rx="1" /></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="M12 6v6l4 2" /></symbol>
+<symbol id="i-cloud-off" viewBox="0 0 24 24"><path d="M10.94 5.274A7 7 0 0 1 15.71 10h1.79a4.5 4.5 0 0 1 4.222 6.057" /> <path d="M18.796 18.81A4.5 4.5 0 0 1 17.5 19H9A7 7 0 0 1 5.79 5.78" /> <path d="m2 2 20 20" /></symbol>
+<symbol id="i-code-xml" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4" /> <path d="m6 8-4 4 4 4" /> <path d="m14.5 4-5 16" /></symbol>
+<symbol id="i-cog" viewBox="0 0 24 24"><path d="M11 10.27 7 3.34" /> <path d="m11 13.73-4 6.93" /> <path d="M12 22v-2" /> <path d="M12 2v2" /> <path d="M14 12h8" /> <path d="m17 20.66-1-1.73" /> <path d="m17 3.34-1 1.73" /> <path d="M2 12h2" /> <path d="m20.66 17-1.73-1" /> <path d="m20.66 7-1.73 1" /> <path d="m3.34 17 1.73-1" /> <path d="m3.34 7 1.73 1" /> <circle cx="12" cy="12" r="2" /> <circle cx="12" cy="12" r="8" /></symbol>
+<symbol id="i-coins" viewBox="0 0 24 24"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48" /> <path d="M15 6h1v4" /> <path d="m6.134 14.768.866-.5 2 3.464" /> <circle cx="16" cy="8" r="6" /></symbol>
+<symbol id="i-columns-2" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" /> <path d="M12 3v18" /></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>
+<symbol id="i-corner-down-left" viewBox="0 0 24 24"><path d="M20 4v7a4 4 0 0 1-4 4H4" /> <path d="m9 10-5 5 5 5" /></symbol>
+<symbol id="i-cpu" viewBox="0 0 24 24"><path d="M12 20v2" /> <path d="M12 2v2" /> <path d="M17 20v2" /> <path d="M17 2v2" /> <path d="M2 12h2" /> <path d="M2 17h2" /> <path d="M2 7h2" /> <path d="M20 12h2" /> <path d="M20 17h2" /> <path d="M20 7h2" /> <path d="M7 20v2" /> <path d="M7 2v2" /> <rect x="4" y="4" width="16" height="16" rx="2" /> <rect x="8" y="8" width="8" height="8" rx="1" /></symbol>
+<symbol id="i-dice-5" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /> <path d="M16 8h.01" /> <path d="M8 8h.01" /> <path d="M8 16h.01" /> <path d="M16 16h.01" /> <path d="M12 12h.01" /></symbol>
+<symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1" /> <circle cx="19" cy="12" r="1" /> <circle cx="5" cy="12" r="1" /></symbol>
+<symbol id="i-eraser" viewBox="0 0 24 24"><path d="M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21" /> <path d="m5.082 11.09 8.828 8.828" /></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /> <circle cx="12" cy="12" r="3" /></symbol>
+<symbol id="i-file-check" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="m9 15 2 2 4-4" /></symbol>
+<symbol id="i-file-code" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 12.5 8 15l2 2.5" /> <path d="m14 12.5 2 2.5-2 2.5" /></symbol>
+<symbol id="i-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></symbol>
+<symbol id="i-file-x" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="m14.5 12.5-5 5" /> <path d="m9.5 12.5 5 5" /></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" /></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4" /></symbol>
+<symbol id="i-flask-conical" viewBox="0 0 24 24"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2" /> <path d="M6.453 15h11.094" /> <path d="M8.5 2h7" /></symbol>
+<symbol id="i-focus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /> <path d="M3 7V5a2 2 0 0 1 2-2h2" /> <path d="M17 3h2a2 2 0 0 1 2 2v2" /> <path d="M21 17v2a2 2 0 0 1-2 2h-2" /> <path d="M7 21H5a2 2 0 0 1-2-2v-2" /></symbol>
+<symbol id="i-folder-open" viewBox="0 0 24 24"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" /></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4" /> <path d="M3.34 19a10 10 0 1 1 17.32 0" /></symbol>
+<symbol id="i-gem" viewBox="0 0 24 24"><path d="M10.5 3 8 9l4 13 4-13-2.5-6" /> <path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z" /> <path d="M2 9h20" /></symbol>
+<symbol id="i-ghost" viewBox="0 0 24 24"><path d="M15 10v1" /> <path d="M7.528 20.472a1.6 1.6 0 012.277 0l1.057 1.056a1.6 1.6 0 002.276 0l1.057-1.056a1.6 1.6 0 012.277 0l1.114 1.114a1.4 1.4 0 002.414-1V10a8 8 0 00-16 0v10.586a1.4 1.4 0 002.414 1z" /> <path d="M9 10v1" /></symbol>
+<symbol id="i-git-commit-horizontal" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /> <line x1="3" x2="9" y1="12" y2="12" /> <line x1="15" x2="21" y1="12" y2="12" /></symbol>
+<symbol id="i-git-fork" viewBox="0 0 24 24"><circle cx="12" cy="18" r="3" /> <circle cx="6" cy="6" r="3" /> <circle cx="18" cy="6" r="3" /> <path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9" /> <path d="M12 12v3" /></symbol>
+<symbol id="i-git-merge" viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /> <circle cx="6" cy="6" r="3" /> <path d="M6 21V9a9 9 0 0 0 9 9" /></symbol>
+<symbol id="i-git-pull-request" viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /> <circle cx="6" cy="6" r="3" /> <path d="M13 6h3a2 2 0 0 1 2 2v7" /> <line x1="6" x2="6" y1="9" y2="21" /></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /> <path d="M2 12h20" /></symbol>
+<symbol id="i-goal" viewBox="0 0 24 24"><path d="M12 13V2l8 4-8 4" /> <path d="M20.561 10.222a9 9 0 1 1-12.55-5.29" /> <path d="M8.002 9.997a5 5 0 1 0 8.9 2.02" /></symbol>
+<symbol id="i-grip-vertical" viewBox="0 0 24 24"><circle cx="9" cy="12" r="1" /> <circle cx="9" cy="5" r="1" /> <circle cx="9" cy="19" r="1" /> <circle cx="15" cy="12" r="1" /> <circle cx="15" cy="5" r="1" /> <circle cx="15" cy="19" r="1" /></symbol>
+<symbol id="i-hammer" viewBox="0 0 24 24"><path d="m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9" /> <path d="m18 15 4-4" /> <path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5" /></symbol>
+<symbol id="i-hand-heart" viewBox="0 0 24 24"><path d="M11 14h2a2 2 0 0 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16" /> <path d="m14.45 13.39 5.05-4.694C20.196 8 21 6.85 21 5.75a2.75 2.75 0 0 0-4.797-1.837.276.276 0 0 1-.406 0A2.75 2.75 0 0 0 11 5.75c0 1.2.802 2.248 1.5 2.946L16 11.95" /> <path d="m2 15 6 6" /> <path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a1 1 0 0 0-2.75-2.91" /></symbol>
+<symbol id="i-hand" viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2" /> <path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2" /> <path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8" /> <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" /></symbol>
+<symbol id="i-handshake" viewBox="0 0 24 24"><path d="m11 17 2 2a1 1 0 1 0 3-3" /> <path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" /> <path d="m21 3 1 11h-2" /> <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" /> <path d="M3 4h8" /></symbol>
+<symbol id="i-heart-handshake" viewBox="0 0 24 24"><path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762" /></symbol>
+<symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M5 22h14" /> <path d="M5 2h14" /> <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" /> <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" /></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /> <circle cx="9" cy="9" r="2" /> <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></symbol>
+<symbol id="i-images" viewBox="0 0 24 24"><path d="m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16" /> <path d="M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2" /> <circle cx="13" cy="7" r="1" fill="currentColor" /> <rect x="8" y="2" width="14" height="14" rx="2" /></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <path d="M12 16v-4" /> <path d="M12 8h.01" /></symbol>
+<symbol id="i-key-round" viewBox="0 0 24 24"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" /> <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" /></symbol>
+<symbol id="i-keyboard-off" viewBox="0 0 24 24"><path d="M 20 4 A2 2 0 0 1 22 6" /> <path d="M 22 6 L 22 16.41" /> <path d="M 7 16 L 16 16" /> <path d="M 9.69 4 L 20 4" /> <path d="M14 8h.01" /> <path d="M18 8h.01" /> <path d="m2 2 20 20" /> <path d="M20 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2" /> <path d="M6 8h.01" /> <path d="M8 12h.01" /></symbol>
+<symbol id="i-keyboard" viewBox="0 0 24 24"><path d="M10 8h.01" /> <path d="M12 12h.01" /> <path d="M14 8h.01" /> <path d="M16 12h.01" /> <path d="M18 8h.01" /> <path d="M6 8h.01" /> <path d="M7 16h10" /> <path d="M8 12h.01" /> <rect width="20" height="16" x="2" y="4" rx="2" /></symbol>
+<symbol id="i-landmark" viewBox="0 0 24 24"><path d="M10 18v-7" /> <path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z" /> <path d="M14 18v-7" /> <path d="M18 18v-7" /> <path d="M3 22h18" /> <path d="M6 18v-7" /></symbol>
+<symbol id="i-languages" viewBox="0 0 24 24"><path d="m5 8 6 6" /> <path d="m4 14 6-6 2-3" /> <path d="M2 5h12" /> <path d="M7 2h1" /> <path d="m22 22-5-10-5 10" /> <path d="M14 18h6" /></symbol>
+<symbol id="i-laptop" viewBox="0 0 24 24"><path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z" /> <path d="M20.054 15.987H3.946" /></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /> <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /> <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></symbol>
+<symbol id="i-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1" /> <rect width="7" height="7" x="14" y="3" rx="1" /> <rect width="7" height="7" x="14" y="14" rx="1" /> <rect width="7" height="7" x="3" y="14" rx="1" /></symbol>
+<symbol id="i-lightbulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /> <path d="M9 18h6" /> <path d="M10 22h4" /></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /> <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></symbol>
+<symbol id="i-list-checks" viewBox="0 0 24 24"><path d="M13 5h8" /> <path d="M13 12h8" /> <path d="M13 19h8" /> <path d="m3 17 2 2 4-4" /> <path d="m3 7 2 2 4-4" /></symbol>
+<symbol id="i-list-todo" viewBox="0 0 24 24"><path d="M13 5h8" /> <path d="M13 12h8" /> <path d="M13 19h8" /> <path d="m3 17 2 2 4-4" /> <rect x="3" y="4" width="6" height="6" rx="1" /></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /> <path d="M7 11V7a5 5 0 0 1 10 0v4" /></symbol>
+<symbol id="i-medal" viewBox="0 0 24 24"><path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15" /> <path d="M11 12 5.12 2.2" /> <path d="m13 12 5.88-9.8" /> <path d="M8 7h8" /> <circle cx="12" cy="17" r="5" /> <path d="M12 18v-2h-.5" /></symbol>
+<symbol id="i-memory-stick" viewBox="0 0 24 24"><path d="M12 12v-2" /> <path d="M12 18v-2" /> <path d="M16 12v-2" /> <path d="M16 18v-2" /> <path d="M2 11h1.5" /> <path d="M20 18v-2" /> <path d="M20.5 11H22" /> <path d="M4 18v-2" /> <path d="M8 12v-2" /> <path d="M8 18v-2" /> <rect x="2" y="6" width="20" height="10" rx="2" /></symbol>
+<symbol id="i-message-circle" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></symbol>
+<symbol id="i-message-square-quote" viewBox="0 0 24 24"><path d="M14 14a2 2 0 0 0 2-2V8h-2" /> <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /> <path d="M8 14a2 2 0 0 0 2-2V8H8" /></symbol>
+<symbol id="i-message-square-text" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z" /> <path d="M7 11h10" /> <path d="M7 15h6" /> <path d="M7 7h8" /></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 19v3" /> <path d="M19 10v2a7 7 0 0 1-14 0v-2" /> <rect x="9" y="2" width="6" height="13" rx="3" /></symbol>
+<symbol id="i-milestone" viewBox="0 0 24 24"><path d="M12 13v8" /> <path d="M12 3v3" /> <path d="M18.172 6a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z" /></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2" /> <line x1="8" x2="16" y1="21" y2="21" /> <line x1="12" x2="12" y1="17" y2="21" /></symbol>
+<symbol id="i-mouse-pointer-2" viewBox="0 0 24 24"><path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" /></symbol>
+<symbol id="i-mouse-pointer-click" viewBox="0 0 24 24"><path d="M14 4.1 12 6" /> <path d="m5.1 8-2.9-.8" /> <path d="m6 12-1.9 2" /> <path d="M7.2 2.2 8 5.1" /> <path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z" /></symbol>
+<symbol id="i-mouse-pointer" viewBox="0 0 24 24"><path d="M12.586 12.586 19 19" /> <path d="M3.688 3.037a.497.497 0 0 0-.651.651l6.5 15.999a.501.501 0 0 0 .947-.062l1.569-6.083a2 2 0 0 1 1.448-1.479l6.124-1.579a.5.5 0 0 0 .063-.947z" /></symbol>
+<symbol id="i-move-right" viewBox="0 0 24 24"><path d="M18 8L22 12L18 16" /> <path d="M2 12H22" /></symbol>
+<symbol id="i-move" viewBox="0 0 24 24"><path d="M12 2v20" /> <path d="m15 19-3 3-3-3" /> <path d="m19 9 3 3-3 3" /> <path d="M2 12h20" /> <path d="m5 9-3 3 3 3" /> <path d="m9 5 3-3 3 3" /></symbol>
+<symbol id="i-network" viewBox="0 0 24 24"><rect x="16" y="16" width="6" height="6" rx="1" /> <rect x="2" y="16" width="6" height="6" rx="1" /> <rect x="9" y="2" width="6" height="6" rx="1" /> <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" /> <path d="M12 12V8" /></symbol>
+<symbol id="i-package-check" viewBox="0 0 24 24"><path d="M12 22V12" /> <path d="m16 17 2 2 4-4" /> <path d="M21 11.127V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.32-.753" /> <path d="M3.29 7 12 12l8.71-5" /> <path d="m7.5 4.27 8.997 5.148" /></symbol>
+<symbol id="i-package" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" /> <path d="M12 22V12" /> <polyline points="3.29 7 12 12 20.71 7" /> <path d="m7.5 4.27 9 5.15" /></symbol>
+<symbol id="i-panel-top" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" /> <path d="M3 9h18" /></symbol>
+<symbol id="i-panels-top-left" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" /> <path d="M3 9h18" /> <path d="M9 21V9" /></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /> <path d="m15 5 4 4" /></symbol>
+<symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" /></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14" /> <path d="M12 5v14" /></symbol>
+<symbol id="i-presentation" viewBox="0 0 24 24"><path d="M2 3h20" /> <path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3" /> <path d="m7 21 5-5 5 5" /></symbol>
+<symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z" /></symbol>
+<symbol id="i-qr-code" viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1" /> <rect width="5" height="5" x="16" y="3" rx="1" /> <rect width="5" height="5" x="3" y="16" rx="1" /> <path d="M21 16h-3a2 2 0 0 0-2 2v3" /> <path d="M21 21v.01" /> <path d="M12 7v3a2 2 0 0 1-2 2H7" /> <path d="M3 12h.01" /> <path d="M12 3h.01" /> <path d="M12 16v.01" /> <path d="M16 12h1" /> <path d="M21 12v.01" /> <path d="M12 21v-1" /></symbol>
+<symbol id="i-quote" viewBox="0 0 24 24"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z" /> <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z" /></symbol>
+<symbol id="i-rabbit" viewBox="0 0 24 24"><path d="M13 16a3 3 0 0 1 2.24 5" /> <path d="M18 12h.01" /> <path d="M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3" /> <path d="M20 8.54V4a2 2 0 1 0-4 0v3" /> <path d="M7.612 12.524a3 3 0 1 0-1.6 4.3" /></symbol>
+<symbol id="i-redo-2" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5" /> <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13" /></symbol>
+<symbol id="i-redo" viewBox="0 0 24 24"><path d="M21 7v6h-6" /> <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7" /></symbol>
+<symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /> <path d="M21 3v5h-5" /> <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /> <path d="M8 16H3v5" /></symbol>
+<symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4" /> <path d="M3 11v-1a4 4 0 0 1 4-4h14" /> <path d="m7 22-4-4 4-4" /> <path d="M21 13v1a4 4 0 0 1-4 4H3" /></symbol>
+<symbol id="i-replace" viewBox="0 0 24 24"><path d="M14 4a1 1 0 0 1 1-1" /> <path d="M15 10a1 1 0 0 1-1-1" /> <path d="M21 4a1 1 0 0 0-1-1" /> <path d="M21 9a1 1 0 0 1-1 1" /> <path d="m3 7 3 3 3-3" /> <path d="M6 10V5a2 2 0 0 1 2-2h2" /> <rect x="3" y="14" width="7" height="7" rx="1" /></symbol>
+<symbol id="i-rocket" viewBox="0 0 24 24"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" /> <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09" /> <path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z" /> <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05" /></symbol>
+<symbol id="i-rotate-ccw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /> <path d="M3 3v5h5" /></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3" /> <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" /> <circle cx="18" cy="5" r="3" /></symbol>
+<symbol id="i-scan-eye" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2" /> <path d="M17 3h2a2 2 0 0 1 2 2v2" /> <path d="M21 17v2a2 2 0 0 1-2 2h-2" /> <path d="M7 21H5a2 2 0 0 1-2-2v-2" /> <circle cx="12" cy="12" r="1" /> <path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0" /></symbol>
+<symbol id="i-scan-search" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2" /> <path d="M17 3h2a2 2 0 0 1 2 2v2" /> <path d="M21 17v2a2 2 0 0 1-2 2h-2" /> <path d="M7 21H5a2 2 0 0 1-2-2v-2" /> <circle cx="12" cy="12" r="3" /> <path d="m16 16-1.9-1.9" /></symbol>
+<symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3" /> <path d="M8.12 8.12 12 12" /> <path d="M20 4 8.12 15.88" /> <circle cx="6" cy="18" r="3" /> <path d="M14.8 14.8 20 20" /></symbol>
+<symbol id="i-scroll-text" viewBox="0 0 24 24"><path d="M15 12h-5" /> <path d="M15 8h-5" /> <path d="M19 17V5a2 2 0 0 0-2-2H4" /> <path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" /></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></symbol>
+<symbol id="i-server-off" viewBox="0 0 24 24"><path d="M7 2h13a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-5" /> <path d="M10 10 2.5 2.5C2 2 2 2.5 2 5v3a2 2 0 0 0 2 2h6z" /> <path d="M22 17v-1a2 2 0 0 0-2-2h-1" /> <path d="M4 14a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16.5l1-.5.5.5-8-8H4z" /> <path d="M6 18h.01" /> <path d="m2 2 20 20" /></symbol>
+<symbol id="i-server" viewBox="0 0 24 24"><rect width="20" height="8" x="2" y="2" rx="2" ry="2" /> <rect width="20" height="8" x="2" y="14" rx="2" ry="2" /> <line x1="6" x2="6.01" y1="6" y2="6" /> <line x1="6" x2="6.01" y1="18" y2="18" /></symbol>
+<symbol id="i-settings-2" viewBox="0 0 24 24"><path d="M14 17H5" /> <path d="M19 7h-9" /> <circle cx="17" cy="17" r="3" /> <circle cx="7" cy="7" r="3" /></symbol>
+<symbol id="i-shield-alert" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="M12 8v4" /> <path d="M12 16h.01" /></symbol>
+<symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m9 12 2 2 4-4" /></symbol>
+<symbol id="i-shield-x" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m14.5 9.5-5 5" /> <path d="m9.5 9.5 5 5" /></symbol>
+<symbol id="i-snail" viewBox="0 0 24 24"><path d="M2 13a6 6 0 1 0 12 0 4 4 0 1 0-8 0 2 2 0 0 0 4 0" /> <circle cx="10" cy="13" r="8" /> <path d="M2 21h12c4.4 0 8-3.6 8-8V7a2 2 0 1 0-4 0v6" /> <path d="M18 3 19.1 5.2" /> <path d="M22 3 20.9 5.2" /></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /> <path d="M20 2v4" /> <path d="M22 4h-4" /> <circle cx="4" cy="20" r="2" /></symbol>
+<symbol id="i-split" viewBox="0 0 24 24"><path d="M16 3h5v5" /> <path d="M8 3H3v5" /> <path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3" /> <path d="m15 9 6-6" /></symbol>
+<symbol id="i-square-check-big" viewBox="0 0 24 24"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344" /> <path d="m9 11 3 3L22 4" /></symbol>
+<symbol id="i-square-split-horizontal" viewBox="0 0 24 24"><path d="M12 2v20" /> <path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3" /> <path d="M8 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3" /></symbol>
+<symbol id="i-square-terminal" viewBox="0 0 24 24"><path d="m7 11 2-2-2-2" /> <path d="M11 13h4" /> <rect width="18" height="18" x="3" y="3" rx="2" ry="2" /></symbol>
+<symbol id="i-square" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" /></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /> <circle cx="12" cy="12" r="6" /> <circle cx="12" cy="12" r="2" /></symbol>
+<symbol id="i-terminal" viewBox="0 0 24 24"><path d="M12 19h8" /> <path d="m4 17 6-6-6-6" /></symbol>
+<symbol id="i-text-cursor-input" viewBox="0 0 24 24"><path d="M12 20h-1a2 2 0 0 1-2-2 2 2 0 0 1-2 2H6" /> <path d="M13 8h7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-7" /> <path d="M5 16H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h1" /> <path d="M6 4h1a2 2 0 0 1 2 2 2 2 0 0 1 2-2h1" /> <path d="M9 6v12" /></symbol>
+<symbol id="i-timer-off" viewBox="0 0 24 24"><path d="M10 2h4" /> <path d="M4.6 11a8 8 0 0 0 1.7 8.7 8 8 0 0 0 8.7 1.7" /> <path d="M7.4 7.4a8 8 0 0 1 10.3 1 8 8 0 0 1 .9 10.2" /> <path d="m2 2 20 20" /> <path d="M12 12v-2" /></symbol>
+<symbol id="i-timer-reset" viewBox="0 0 24 24"><path d="M10 2h4" /> <path d="M12 14v-4" /> <path d="M4 13a8 8 0 0 1 8-7 8 8 0 1 1-5.3 14L4 17.6" /> <path d="M9 17H4v5" /></symbol>
+<symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2" /> <line x1="12" x2="15" y1="14" y2="11" /> <circle cx="12" cy="14" r="8" /></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M10 11v6" /> <path d="M14 11v6" /> <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" /> <path d="M3 6h18" /> <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></symbol>
+<symbol id="i-trending-down" viewBox="0 0 24 24"><path d="M16 17h6v-6" /> <path d="m22 17-8.5-8.5-5 5L2 7" /></symbol>
+<symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M16 7h6v6" /> <path d="m22 7-8.5 8.5-5-5L2 17" /></symbol>
+<symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2" /> <path d="M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2" /> <path d="M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3" /> <path d="M4 22h16" /> <path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z" /> <path d="M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3" /></symbol>
+<symbol id="i-turtle" viewBox="0 0 24 24"><path d="m12 10 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a8 8 0 1 0-16 0v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3l2-4h4Z" /> <path d="M4.82 7.9 8 10" /> <path d="M15.18 7.9 12 10" /> <path d="M16.93 10H20a2 2 0 0 1 0 4H2" /></symbol>
+<symbol id="i-undo-2" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5" /> <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" /></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24"><path d="M3 7v6h6" /> <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" /></symbol>
+<symbol id="i-user-plus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <line x1="19" x2="19" y1="8" y2="14" /> <line x1="22" x2="16" y1="11" y2="11" /></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <path d="M16 3.128a4 4 0 0 1 0 7.744" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <circle cx="9" cy="7" r="4" /></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" /> <rect x="2" y="6" width="14" height="12" rx="2" /></symbol>
+<symbol id="i-wand-sparkles" viewBox="0 0 24 24"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72" /> <path d="m14 7 3 3" /> <path d="M5 6v4" /> <path d="M19 14v4" /> <path d="M10 2v2" /> <path d="M7 8H3" /> <path d="M21 16h-4" /> <path d="M11 3H9" /></symbol>
+<symbol id="i-workflow" viewBox="0 0 24 24"><rect width="8" height="8" x="3" y="3" rx="2" /> <path d="M7 11v4a2 2 0 0 0 2 2h4" /> <rect width="8" height="8" x="13" y="13" rx="2" /></symbol>
+<symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z" /></symbol>
+<symbol id="i-zoom-in" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /> <line x1="21" x2="16.65" y1="21" y2="16.65" /> <line x1="11" x2="11" y1="8" y2="14" /> <line x1="8" x2="14" y1="11" y2="11" /></symbol>
+<symbol id="jp-jupyter" viewBox="0 0 152 165"><path fill="#F37726" d="M76.021 140.163c-32.64 0-61.145-11.927-75.942-29.58 5.51 15.84 15.781 29.567 29.39 39.278a80.17 80.17 0 0 0 46.57 14.929 80.17 80.17 0 0 0 46.57-14.929c13.61-9.711 23.88-23.437 29.391-39.278-14.833 17.653-43.338 29.58-75.979 29.58m-.005-114.832c32.64 0 61.146 11.927 75.943 29.58a80.9 80.9 0 0 0-29.391-39.278A80.16 80.16 0 0 0 75.998.705a80.16 80.16 0 0 0-46.57 14.928A80.9 80.9 0 0 0 .038 54.912c14.832-17.617 43.338-29.58 75.978-29.58"/></symbol>
+<symbol id="jp-jupyter-full" viewBox="0 0 39 51"><path fill="#F37726" d="M20.005 38.114c-7.85 0-14.706-2.876-18.265-7.134a19.5 19.5 0 0 0 7.069 9.473 19.24 19.24 0 0 0 11.2 3.6c4.013 0 7.927-1.258 11.2-3.6a19.5 19.5 0 0 0 7.069-9.473c-3.567 4.258-10.423 7.134-18.273 7.134m-.002-27.694c7.85 0 14.706 2.876 18.265 7.133a19.5 19.5 0 0 0-7.069-9.473A19.24 19.24 0 0 0 20 4.48a19.24 19.24 0 0 0-11.2 3.6 19.5 19.5 0 0 0-7.069 9.473c3.567-4.248 10.423-7.134 18.273-7.134"/> <path fill="currentColor" d="M37.194 3.154a3 3 0 0 1-.426 1.672 2.96 2.96 0 0 1-1.275 1.153 2.93 2.93 0 0 1-3.238-.505 3 3 0 0 1-.776-3.21c.2-.553.558-1.033 1.029-1.38a2.93 2.93 0 0 1 3.733.209c.576.532.919 1.274.953 2.061M9.228 46.393a3.77 3.77 0 0 1-.536 2.11 3.73 3.73 0 0 1-1.608 1.452 3.69 3.69 0 0 1-4.082-.638 3.75 3.75 0 0 1-1.097-1.875 3.8 3.8 0 0 1 .122-2.173 3.74 3.74 0 0 1 1.299-1.739 3.696 3.696 0 0 1 4.704.268 3.76 3.76 0 0 1 1.198 2.595M2.635 9.456a2.17 2.17 0 0 1-1.227-.318 2.2 2.2 0 0 1-.845-.951A2.22 2.22 0 0 1 .935 5.77a2.16 2.16 0 0 1 2.356-.577c.405.15.757.418 1.011.77a2.21 2.21 0 0 1-.156 2.783 2.17 2.17 0 0 1-1.511.71"/></symbol>
+<symbol id="jp-folder" viewBox="0 0 24 24"><path fill="currentColor" d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8z"/></symbol>
+<symbol id="jp-file" viewBox="0 0 22 22"><path fill="currentColor" d="m19.3 8.2-5.5-5.5c-.3-.3-.7-.5-1.2-.5H3.9c-.8.1-1.6.9-1.6 1.8v14.1c0 .9.7 1.6 1.6 1.6h14.2c.9 0 1.6-.7 1.6-1.6V9.4c.1-.5-.1-.9-.4-1.2m-5.8-3.3 3.4 3.6h-3.4zm3.9 12.7H4.7c-.1 0-.2 0-.2-.2V4.7c0-.2.1-.3.2-.3h7.2v4.4s0 .8.3 1.1 1.1.3 1.1.3h4.3v7.2s-.1.2-.2.2"/></symbol>
+<symbol id="jp-notebook" viewBox="0 0 22 22"><g fill="#EF6C00"> <path d="M18.7 3.3v15.4H3.3V3.3zm1.5-1.5H1.8v18.3h18.3z"/> <path d="m16.5 16.5-5.4-4.3-5.6 4.3v-11h11z"/> </g></symbol>
+<symbol id="jp-python" viewBox="-10 -10 131.161 132.389"><path fill="#306998" d="M54.919 0c-4.584.022-8.961.413-12.813 1.095C30.76 3.099 28.7 7.295 28.7 15.032v10.219h26.813v3.406H18.638c-7.793 0-14.616 4.684-16.75 13.594-2.462 10.213-2.571 16.586 0 27.25 1.905 7.938 6.457 13.594 14.25 13.594h9.218v-12.25c0-8.85 7.657-16.657 16.75-16.657h26.782c7.454 0 13.406-6.138 13.406-13.625v-25.53c0-7.267-6.13-12.726-13.406-13.938C64.282.328 59.502-.02 54.918 0m-14.5 8.22c2.77 0 5.031 2.298 5.031 5.125 0 2.816-2.262 5.093-5.031 5.093-2.78 0-5.031-2.277-5.031-5.093 0-2.827 2.251-5.125 5.03-5.125"/> <path fill="#ffd43b" d="M85.638 28.657v11.906c0 9.231-7.826 17-16.75 17H42.106c-7.336 0-13.406 6.279-13.406 13.625V96.72c0 7.266 6.319 11.54 13.406 13.625 8.488 2.495 16.627 2.946 26.782 0 6.75-1.955 13.406-5.888 13.406-13.625V86.5H55.513v-3.405H95.7c7.793 0 10.696-5.436 13.406-13.594 2.8-8.399 2.68-16.476 0-27.25-1.925-7.758-5.604-13.594-13.406-13.594zM70.575 93.313c2.78 0 5.031 2.278 5.031 5.094 0 2.827-2.251 5.125-5.031 5.125-2.77 0-5.031-2.298-5.031-5.125 0-2.816 2.261-5.094 5.031-5.094"/></symbol>
+<symbol id="jp-markdown" viewBox="0 0 22 22"><path fill="#7B1FA2" d="M5 14.9h12l-6.1 6zm9.4-6.8c0-1.3-.1-2.9-.1-4.5-.4 1.4-.9 2.9-1.3 4.3l-1.3 4.3h-2L8.5 7.9c-.4-1.3-.7-2.9-1-4.3-.1 1.6-.1 3.2-.2 4.6L7 12.4H4.8l.7-11h3.3L10 5c.4 1.2.7 2.7 1 3.9.3-1.2.7-2.6 1-3.9l1.2-3.7h3.3l.6 11h-2.4z"/></symbol>
+<symbol id="jp-json" viewBox="0 0 22 22"><g fill="#F9A825"> <path d="M20.2 11.8c-1.6 0-1.7.5-1.7 1 0 .4.1.9.1 1.3.1.5.1.9.1 1.3 0 1.7-1.4 2.3-3.5 2.3h-.9v-1.9h.5c1.1 0 1.4 0 1.4-.8 0-.3 0-.6-.1-1 0-.4-.1-.8-.1-1.2 0-1.3 0-1.8 1.3-2-1.3-.2-1.3-.7-1.3-2 0-.4.1-.8.1-1.2.1-.4.1-.7.1-1 0-.8-.4-.7-1.4-.8h-.5V4.1h.9c2.2 0 3.5.7 3.5 2.3 0 .4-.1.9-.1 1.3-.1.5-.1.9-.1 1.3 0 .5.2 1 1.7 1zM1.8 10.1c1.6 0 1.7-.5 1.7-1 0-.4-.1-.9-.1-1.3-.1-.5-.1-.9-.1-1.3 0-1.6 1.4-2.3 3.5-2.3h.9v1.9h-.5c-1 0-1.4 0-1.4.8 0 .3 0 .6.1 1 0 .2.1.6.1 1 0 1.3 0 1.8-1.3 2C6 11.2 6 11.7 6 13c0 .4-.1.8-.1 1.2-.1.3-.1.7-.1 1 0 .8.3.8 1.4.8h.5v1.9h-.9c-2.1 0-3.5-.6-3.5-2.3 0-.4.1-.9.1-1.3.1-.5.1-.9.1-1.3 0-.5-.2-1-1.7-1z"/> <circle cx="11" cy="13.8" r="2.1"/> <circle cx="11" cy="8.2" r="2.1"/> </g></symbol>
+<symbol id="jp-spreadsheet" viewBox="0 0 22 22"><path fill="#4CAF50" d="M2.2 2.2v17.6h17.6V2.2zm15.4 7.7h-5.5V4.4h5.5zM9.9 4.4v5.5H4.4V4.4zm-5.5 7.7h5.5v5.5H4.4zm7.7 5.5v-5.5h5.5v5.5z"/></symbol>
+<symbol id="jp-console" viewBox="0 0 200 200"><path fill="#0288D1" d="M20 19.8h160v159.9H20z"/> <path fill="#fff" d="M105 127.3h40v12.8h-40zM51.1 77 74 99.9l-23.3 23.3 10.5 10.5 23.3-23.3L95 99.9 84.5 89.4 61.6 66.5z"/></symbol>
+<symbol id="jp-settings" viewBox="0 0 24 24"><path fill="currentColor" d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65A.49.49 0 0 0 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5"/></symbol>
+<symbol id="jp-launcher" viewBox="0 0 24 24"><path fill="currentColor" d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3z"/></symbol>
+<symbol id="jp-keyboard" viewBox="0 0 24 24"><path fill="currentColor" d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2m-9 3h2v2h-2zm0 3h2v2h-2zM8 8h2v2H8zm0 3h2v2H8zm-1 2H5v-2h2zm0-3H5V8h2zm9 7H8v-2h8zm0-4h-2v-2h2zm0-3h-2V8h2zm3 3h-2v-2h2zm0-3h-2V8h2z"/></symbol>
+<symbol id="jp-text-editor" viewBox="0 0 24 24"><path fill="currentColor" d="M15 15H3v2h12zm0-8H3v2h12zM3 13h18v-2H3zm0 8h18v-2H3zM3 3v2h18V3z"/></symbol>
+<symbol id="jp-running" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8m96 328c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16h160c8.8 0 16 7.2 16 16z"/></symbol>
+<symbol id="jp-toc" viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h14v2H7zm0 8v-2h14v2zM4 4.5A1.5 1.5 0 0 1 5.5 6 1.5 1.5 0 0 1 4 7.5 1.5 1.5 0 0 1 2.5 6 1.5 1.5 0 0 1 4 4.5m0 6A1.5 1.5 0 0 1 5.5 12 1.5 1.5 0 0 1 4 13.5 1.5 1.5 0 0 1 2.5 12 1.5 1.5 0 0 1 4 10.5M7 19v-2h14v2zm-3-2.5A1.5 1.5 0 0 1 5.5 18 1.5 1.5 0 0 1 4 19.5 1.5 1.5 0 0 1 2.5 18 1.5 1.5 0 0 1 4 16.5"/></symbol>
+<symbol id="jp-extension" viewBox="0 0 24 24"><path fill="currentColor" d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7s2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5a2.5 2.5 0 0 0 0-5"/></symbol>
+<symbol id="jp-property-inspector" viewBox="0 0 24 24"><path fill="currentColor" d="M14.9 17.45c1.35 0 2.45-1.1 2.45-2.45s-1.1-2.45-2.45-2.45c-1.36 0-2.45 1.1-2.45 2.45s1.09 2.45 2.45 2.45m5.2-1.77 1.48 1.16c.13.11.17.29.08.45l-1.4 2.42a.35.35 0 0 1-.43.15l-1.74-.7c-.36.28-.76.51-1.18.69l-.27 1.85c-.02.17-.17.3-.34.3h-2.8c-.18 0-.32-.13-.35-.3l-.26-1.85c-.43-.18-.82-.41-1.18-.69l-1.75.7c-.15.06-.34 0-.42-.15l-1.4-2.42a.35.35 0 0 1 .08-.45l1.48-1.16-.05-.68.05-.69-1.48-1.15a.35.35 0 0 1-.08-.45l1.4-2.42c.08-.16.27-.22.42-.16l1.75.71c.36-.28.75-.52 1.18-.69l.26-1.86c.03-.16.17-.29.35-.29h2.8c.17 0 .32.13.34.29l.27 1.86c.42.17.82.41 1.18.69l1.74-.71c.17-.06.34 0 .43.16l1.4 2.42c.09.15.05.34-.08.45l-1.48 1.15.05.69zM7.33 7.445A1.566 1.566 0 0 0 7.904 5.3a1.575 1.575 0 1 0-.574 2.145m2.327-2.65 1.21.157c.096.025.173.12.171.236v1.8a.214.214 0 0 1-.183.223l-1.195.17-.42.75.43 1.126c.037.106 0 .22-.096.275l-1.559.9a.23.23 0 0 1-.294-.05l-.734-.95-.878-.001-.762.96c-.058.08-.173.1-.275.043l-1.56-.901a.23.23 0 0 1-.101-.276l.452-1.116-.246-.366-.194-.396-1.192-.166a.23.23 0 0 1-.189-.226V5.186c.002-.117.077-.206.175-.217l1.204-.175.446-.766-.456-1.11a.23.23 0 0 1 .104-.28l1.56-.9a.225.225 0 0 1 .285.054l.76.936.86.01.745-.949a.214.214 0 0 1 .284-.048l1.56.9a.24.24 0 0 1 .118.267l-.47 1.126.246.366z"/></symbol>
+<symbol id="jp-tab" viewBox="0 0 24 24"><path fill="currentColor" d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H3V5h10v4h8z"/></symbol>
+<symbol id="jp-bug" viewBox="0 0 24 24"><path fill="currentColor" d="M20 8h-2.81a6 6 0 0 0-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5s-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20zm-6 8h-4v-2h4zm0-4h-4v-2h4z"/></symbol>
+<symbol id="jp-bug-dot" viewBox="0 0 24 24"><g fill="currentColor"> <path fill-rule="evenodd" d="M17.19 8H20v2h-2.09c.05.33.09.66.09 1v1h2v2h-2v.027a4.5 4.5 0 0 0-3.545 6.447A5.997 5.997 0 0 1 6.81 18H4v-2h2.09c-.05-.33-.09-.66-.09-1v-1H4v-2h2v-1c0-.34.04-.67.09-1H4V8h2.81c.45-.78 1.07-1.45 1.81-1.96L7 4.41 8.41 3l2.18 2.17c.45-.11.92-.17 1.41-.17s.96.06 1.42.17L15.59 3 17 4.41l-1.63 1.63c.75.51 1.37 1.18 1.82 1.96M10 16h4v-2h-4zm0-4h4v-2h-4z" clip-rule="evenodd"/> <path d="M22 18.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0"/> </g></symbol>
+<symbol id="jp-add" viewBox="0 0 16 16"><path fill="currentColor" d="m13 8.8h-4v4h-1.6v-4h-4v-1.6h4v-4h1.6v4h4z"/></symbol>
+<symbol id="jp-new-folder" viewBox="0 0 24 24"><path fill="currentColor" d="M20 6h-8l-2-2H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2m-1 8h-3v3h-2v-3h-3v-2h3V9h2v3h3z"/></symbol>
+<symbol id="jp-file-upload" viewBox="0 0 24 24"><path fill="currentColor" d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></symbol>
+<symbol id="jp-refresh" viewBox="0 0 18 18"><path fill="currentColor" d="M9 13.5c-2.49 0-4.5-2.01-4.5-4.5S6.51 4.5 9 4.5c1.24 0 2.36.52 3.17 1.33L10 8h5V3l-1.76 1.76A6 6 0 0 0 9 3C5.69 3 3.01 5.69 3.01 9S5.69 15 9 15a5.98 5.98 0 0 0 5.9-5h-1.52c-.46 2-2.24 3.5-4.38 3.5"/></symbol>
+<symbol id="jp-filter-list" viewBox="0 0 24 24"><path fill="currentColor" d="M10 18h4v-2h-4zM3 6v2h18V6zm3 7h12v-2H6z"/></symbol>
+<symbol id="jp-filter" viewBox="0 0 16 16"><path fill="currentColor" d="m9.33 8v5.26c0 0.197-0.0429 0.412-0.197 0.549-0.257 0.257-0.686 0.257-0.943 0l-1.34-1.34q-0.206-0.232-0.197-0.557v-3.91l-3.86-4.92a0.686 0.686 0 0 1 0.111-0.935q0.197-0.137 0.42-0.146h9.33q0.223 0 0.42 0.146c0.283 0.232 0.343 0.643 0.111 0.935z"/></symbol>
+<symbol id="jp-save" viewBox="0 0 24 24"><path fill="currentColor" d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V7zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3m3-10H5V5h10z"/></symbol>
+<symbol id="jp-cut" viewBox="0 0 24 24"><path fill="currentColor" d="M9.64 7.64c.23-.5.36-1.05.36-1.64 0-2.21-1.79-4-4-4S2 3.79 2 6s1.79 4 4 4c.59 0 1.14-.13 1.64-.36L10 12l-2.36 2.36C7.14 14.13 6.59 14 6 14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4c0-.59-.13-1.14-.36-1.64L12 14l7 7h3v-1zM6 8c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2m0 12c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2m6-7.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5M19 3l-6 6 2 2 7-7V3z"/></symbol>
+<symbol id="jp-copy" viewBox="0 0 18 18"><path fill="currentColor" d="M11.9 1H3.2c-.8 0-1.5.7-1.5 1.5v10.2h1.5V2.5h8.7zm2.2 2.9h-8c-.8 0-1.5.7-1.5 1.5v10.2c0 .8.7 1.5 1.5 1.5h8c.8 0 1.5-.7 1.5-1.5V5.4c-.1-.8-.7-1.5-1.5-1.5m0 11.6h-8V5.4h8z"/></symbol>
+<symbol id="jp-paste" viewBox="0 0 24 24"><path fill="currentColor" d="M19 2h-4.18C14.4.84 13.3 0 12 0S9.6.84 9.18 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1m7 18H5V4h2v3h10V4h2z"/></symbol>
+<symbol id="jp-run" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></symbol>
+<symbol id="jp-stop" viewBox="0 0 24 24"><path fill="currentColor" d="M6 6h12v12H6z"/></symbol>
+<symbol id="jp-fast-forward" viewBox="0 0 24 24"><path fill="currentColor" d="m4 18 8.5-6L4 6zm9-12v12l8.5-6z"/></symbol>
+<symbol id="jp-duplicate" viewBox="0 0 14 14"><path fill="currentColor" fill-rule="evenodd" d="M2.8.875h6.096c.305 0 .554.264.554.587s-.25.587-.554.587H3.354c-.305 0-.554.264-.554.587V9.68c0 .322-.25.587-.554.587s-.554-.264-.554-.587V2.049c0-.646.498-1.174 1.108-1.174M5.367 11.9V4.55h5.716v7.35zM4.142 4.142c0-.451.365-.817.816-.817h6.534c.45 0 .816.366.816.817v8.166a.817.817 0 0 1-.816.817H4.958a.817.817 0 0 1-.816-.817z" clip-rule="evenodd"/> <path fill="currentColor" stroke="#616161" stroke-width=".5" d="M9.436 8.265H8.364v1.071a.215.215 0 0 1-.214.215.215.215 0 0 1-.214-.215v-1.07H6.864a.215.215 0 0 1-.214-.215c0-.118.096-.215.214-.215h1.072v-1.07a.214.214 0 1 1 .428-.001v1.072h1.072c.118 0 .214.096.214.214a.215.215 0 0 1-.214.214Z"/></symbol>
+<symbol id="jp-move-up" viewBox="0 0 14 14"><path fill="currentColor" d="M1.529 6.471a.748.748 0 0 0 1.057 1.058L6.25 3.873v8.377a.75.75 0 0 0 1.5 0V3.873l3.653 3.659a.753.753 0 1 0 1.065-1.064l-4.76-4.76a1 1 0 0 0-1.415 0z"/></symbol>
+<symbol id="jp-move-down" viewBox="0 0 14 14"><path fill="currentColor" d="M12.471 7.529a.748.748 0 0 0-1.057-1.058L7.75 10.127V1.75a.75.75 0 0 0-1.5 0v8.378l-3.653-3.66a.753.753 0 1 0-1.065 1.064l4.76 4.76a1 1 0 0 0 1.415 0z"/></symbol>
+<symbol id="jp-add-above" viewBox="0 0 14 14"><g clip-path="url(#addabovea)"> <path fill="currentColor" stroke="#616161" stroke-width=".7" d="M4.75 4.93h1.875v1.876c0 .206.169.375.375.375a.376.376 0 0 0 .375-.375V4.93H9.25a.376.376 0 0 0 .375-.375.376.376 0 0 0-.375-.375H7.375V2.306A.376.376 0 0 0 7 1.93a.376.376 0 0 0-.375.375V4.18H4.75a.376.376 0 0 0-.375.375c0 .206.169.375.375.375Z"/> </g> <path fill="currentColor" fill-rule="evenodd" d="M11.5 9.5v2h-9v-2zM12 8a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" clip-rule="evenodd"/> <defs> <clipPath id="addabovea"> <path fill="#fff" d="M10 1.556H4v6h6z"/> </clipPath> </defs></symbol>
+<symbol id="jp-add-below" viewBox="0 0 14 14"><g clip-path="url(#addbelowa)"> <path fill="currentColor" stroke="#616161" stroke-width=".7" d="M9.25 10.07H7.375V8.193A.376.376 0 0 0 7 7.82a.376.376 0 0 0-.375.375v1.875H4.75a.376.376 0 0 0-.375.375c0 .207.169.375.375.375h1.875v1.875c0 .207.169.375.375.375a.376.376 0 0 0 .375-.375V10.82H9.25a.376.376 0 0 0 .375-.375.376.376 0 0 0-.375-.375Z"/> </g> <path fill="currentColor" fill-rule="evenodd" d="M2.5 5.5v-2h9v2zM2 7a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1z" clip-rule="evenodd"/> <defs> <clipPath id="addbelowa"> <path fill="#fff" d="M4 13.444h6v-6H4z"/> </clipPath> </defs></symbol>
+<symbol id="jp-delete" viewBox="0 0 16 16"><path fill="currentColor" d="m4 13c0 0.7 0.6 1.3 1.3 1.3h5.4c0.7 0 1.3-0.6 1.3-1.3v-8h-8zm8.6-10h-2.2l-0.7-0.7h-3.4l-0.7 0.7h-2.2l1e-7 1.3h9.2z"/></symbol>
+<symbol id="jp-undo" viewBox="0 0 24 24"><path fill="currentColor" d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8"/></symbol>
+<symbol id="jp-redo" viewBox="0 0 24 24"><path fill="currentColor" d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16a8 8 0 0 1 7.6-5.5c1.95 0 3.73.72 5.12 1.88L13 16h9V7z"/></symbol>
+<symbol id="jp-numbering" viewBox="0 0 28 28"><path fill="currentColor" d="M4 19h2v.5H5v1h1v.5H4v1h3v-4H4zm1-9h1V6H4v1h1zm-1 3h1.8L4 15.1v.9h3v-1H5.2L7 12.9V12H4zm5-6v2h14V7zm0 14h14v-2H9zm0-6h14v-2H9z"/></symbol>
+<symbol id="jp-collapse-all" viewBox="0 0 24 24"><g fill="currentColor"> <path d="M8 2h12c1 0 2 1 2 2v12c0 1 0 2-2 2V4H6c0-2 1-2 2-2"/> <path d="M18 8c0-1-1-2-2-2H4C3 6 2 7 2 8v12c0 1 1 2 2 2h12c1 0 2-1 2-2zm-2 0v12H4V8z"/> <path d="M6 13v2h8v-2z"/> </g></symbol>
+<symbol id="jp-ellipses" viewBox="0 0 24 24"><g fill="currentColor"> <circle cx="5" cy="12" r="2"/> <circle cx="12" cy="12" r="2"/> <circle cx="19" cy="12" r="2"/> </g></symbol>
+<symbol id="jp-close" viewBox="0 0 16 16"><circle fill="none" cx="8" cy="8" r="7.3"/> <path d="m13 4.2-1-1-3.8 3.8-3.8-3.8-1 1 3.8 3.8-3.8 3.8 1 1 3.8-3.8 3.8 3.8 1-1-3.8-3.8z" fill="currentColor"/> <circle cx="8" cy="8" r="4.6" fill="none"/></symbol>
+<symbol id="jp-circle-empty" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8"/></symbol>
+<symbol id="jp-circle" viewBox="0 0 18 18"><circle cx="9" cy="9" r="8" fill="currentColor"/></symbol>
+<symbol id="jp-search" viewBox="0 0 18 18"><path fill="currentColor" d="M12.1 10.9h-.7l-.2-.2c.8-.9 1.3-2.2 1.3-3.5 0-3-2.4-5.4-5.4-5.4S1.8 4.2 1.8 7.1s2.4 5.4 5.4 5.4c1.3 0 2.5-.5 3.5-1.3l.2.2v.7l4.1 4.1 1.2-1.2zm-5 0c-2.1 0-3.7-1.7-3.7-3.7s1.7-3.7 3.7-3.7 3.7 1.7 3.7 3.7-1.6 3.7-3.7 3.7"/></symbol>
+<symbol id="jp-launch" viewBox="0 0 32 32"><g fill="currentColor"> <path d="M26 28H6a2.003 2.003 0 0 1-2-2V6a2.003 2.003 0 0 1 2-2h10v2H6v20h20V16h2v10a2.003 2.003 0 0 1-2 2"/> <path d="M20 2v2h6.586L18 12.586 19.414 14 28 5.414V12h2V2z"/> </g></symbol>
+<symbol id="jp-kernel" viewBox="0 0 24 24"><path fill="currentColor" d="M15 9H9v6h6zm-2 4h-2v-2h2zm8-2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2zm-4 6H7V7h10z"/></symbol>
+<symbol id="jp-bell" viewBox="0 0 16 16"><path fill="#333" d="M8 .29c-1.4 0-2.7.73-3.6 1.8-1.2 1.5-1.4 3.4-1.5 5.2-.18 2.2-.44 4-2.3 5.3l.28 1.3h5c.026.66.32 1.1.71 1.5.84.61 2 .61 2.8 0 .52-.4.6-1 .71-1.5h5l.28-1.3c-1.9-.97-2.2-3.3-2.3-5.3-.13-1.8-.26-3.7-1.5-5.2-.85-1-2.2-1.8-3.6-1.8zm0 1.4c.88 0 1.9.55 2.5 1.3.88 1.1 1.1 2.7 1.2 4.4.13 1.7.23 3.6 1.3 5.2H3c1.1-1.6 1.2-3.4 1.3-5.2.13-1.7.3-3.3 1.2-4.4.59-.72 1.6-1.3 2.5-1.3m-.74 12h1.5c-.001.28.015.79-.74.79-.73.002-.72-.53-.74-.79z"/></symbol>
+<symbol id="jp-terminal" viewBox="0 0 24 24"><path fill="#333" d="M2 2h20v20H2z"/> <path fill="#fff" d="M9.01 14.762q0-.246-.077-.434a.9.9 0 0 0-.234-.351 1.6 1.6 0 0 0-.422-.288 5 5 0 0 0-.627-.263q-.592-.211-1.078-.446a3.5 3.5 0 0 1-.832-.544 2.2 2.2 0 0 1-.528-.721 2.4 2.4 0 0 1-.187-.985q0-.498.17-.908a2.1 2.1 0 0 1 .48-.72q.31-.306.75-.493.44-.188.979-.24V7.11h.937v1.272q.527.07.95.287.421.217.714.568.3.345.457.82.165.47.164 1.055H8.998q0-.709-.323-1.072-.322-.37-.873-.37-.299 0-.521.083a.9.9 0 0 0-.358.223.9.9 0 0 0-.21.334q-.066.194-.065.421 0 .23.064.41a.9.9 0 0 0 .229.329q.165.152.428.293.263.134.656.275.591.223 1.072.463.48.235.82.55.346.312.528.727.187.41.187.973 0 .515-.17.932-.17.41-.486.709t-.762.48a3.7 3.7 0 0 1-.996.229v1.148h-.931V17.1a4 4 0 0 1-.967-.217 2.6 2.6 0 0 1-.832-.504 2.4 2.4 0 0 1-.574-.826q-.217-.505-.217-1.207h1.635q0 .421.123.709.123.281.316.45.2.165.451.235.252.07.516.07.627 0 .949-.292a.98.98 0 0 0 .322-.756m8.36 3.51h-5.343V17h5.344z"/></symbol>
+<symbol id="jp-caret-down" viewBox="0 0 18 18"><path fill="currentColor" d="M5.2 7.5 9 11.2l3.8-3.8H5.2z" shape-rendering="geometricPrecision"/></symbol>
+<symbol id="jp-caret-right" viewBox="0 0 18 18"><path fill="currentColor" d="M7.2 5.2 10.9 9l-3.8 3.8V5.2z" shape-rendering="geometricPrecision"/></symbol>
+<symbol id="jp-caret-up" viewBox="0 0 18 18"><path fill="currentColor" d="M5.2 10.5 9 6.8l3.8 3.8H5.2z" shape-rendering="geometricPrecision"/></symbol>
+<symbol id="jp-step-into" viewBox="0 0 16 16"><path fill="currentColor" d="M8 9.532h.542l3.905-3.905-1.061-1.06-2.637 2.61V1H7.251v6.177l-2.637-2.61-1.061 1.06 3.905 3.905zm1.956 3.481a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/></symbol>
+<symbol id="jp-step-over" viewBox="0 0 16 16"><path fill="currentColor" d="M14.25 5.75v-4h-1.5v2.542c-1.145-1.359-2.911-2.209-4.84-2.209-3.177 0-5.92 2.307-6.16 5.398l-.02.269h1.5l.022-.226c.212-2.195 2.202-3.94 4.656-3.94 1.736 0 3.244.875 4.05 2.166h-2.83v1.5h4.163l.962-.975V5.75zM8 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/></symbol>
+<symbol id="jp-step-out" viewBox="0 0 16 16"><path fill="currentColor" d="M8 1h-.542L3.553 4.905l1.061 1.06 2.637-2.61v6.177h1.498V3.355l2.637 2.61 1.061-1.06L8.542 1zm1.956 12.013a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/></symbol>
+<symbol id="jp-pause" viewBox="0 0 24 24"><path fill="currentColor" d="M7 6h4v12H7Zm6 0h4v12h-4z"/></symbol>
+<symbol id="jp-variable" viewBox="0 0 16 16"><path fill="#007ACC" fill-rule="evenodd" d="m1.5 4-.5.5v8l.5.5H4v-1H2V5h2V4zm13 9 .5-.5v-8l-.5-.5H12v1h2v7h-2v1zM8.797 5l-4.5 2L4 7.457v2.5l.243.429 2.5 1.5.46.028 4.5-2L12 9.457v-2.5l-.243-.429-2.5-1.5zM5 8.34v1.334l1.5.9V9.24zm2.5.942v1.406L11 9.131V7.726zm2.918-2.391-1.452-.872-3.384 1.504 1.452.871z" clip-rule="evenodd"/></symbol>
+<symbol id="jp-open-kernel-source" viewBox="0 0 24 24"><path fill="currentColor" d="M5 2h10l5 5v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6h1v2l4-3-4-3v2H3V4a2 2 0 0 1 2-2m7 16h4v-2h-4zm0-4h6v-2h-6zm0-4h6V8h-6zm-2 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-7-2v2H1v-2z"/></symbol>
+</svg>
+<!-- sprite:end -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="cursor-arrow" viewBox="0 0 28 32"><path d="M3 2.5 L3 25 L9.2 19.4 L13.4 29 L17.6 27.2 L13.5 17.8 L21.8 17.6 Z" fill="#111" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="viewport">
+<div class="stage">
+
+<!-- ================================================================ 1. TITLE AND TOUR -->
+<section class="slide tour-slide" id="tour" data-hud="off" data-transition="fade" data-title="Title and tour" data-time="4:30" data-print-steps="0 2 4 6 8">
+  <div class="tour-title">
+    <div class="kicker"><svg class="jp tt-logo"><use href="#jp-jupyter"/></svg>Jupyter Mini Summit</div>
+    <h1 class="title xl">What’s new in JupyterLab&nbsp;4.6</h1>
+    <p class="tt-sub">and the tooling behind it</p>
+    <div class="tt-pillars">
+      <span class="chip c-prototype"><svg class="i"><use href="#i-flask-conical"/></svg>prototype</span>
+      <span class="chip c-lint"><svg class="i"><use href="#i-shield-check"/></svg>lint</span>
+      <span class="chip c-build"><svg class="i"><use href="#i-hammer"/></svg>build</span>
+      <span class="chip c-test"><svg class="i"><use href="#i-camera"/></svg>test</span>
+    </div>
+    <div class="tt-speaker">
+      <div class="tt-name">Mike Krassowski</div>
+      <div class="tt-org"><img class="logo on-dark lg-ot" src="assets/img/logos/openteams-white.svg" alt="OpenTeams"><img class="logo on-light lg-ot" src="assets/img/logos/openteams.svg" alt="OpenTeams"></div>
+    </div>
+    <div class="tt-url"><svg class="i"><use href="#i-link"/></svg>github.com/krassowski/mini-summit</div>
+  </div>
+
+  <div class="tour-scene">
+    <div class="tour-frame">
+      <div class="tour-camera">
+        <div class="jl">
+          <div class="jl-menubar">
+            <svg class="jl-logo" viewBox="0 0 39 51"><use href="#jp-jupyter-full"/></svg>
+            <span>File</span><span>Edit</span><span>View</span><span>Run</span><span>Kernel</span><span>Tabs</span><span>Settings</span><span>Help</span>
+          </div>
+          <div class="jl-body">
+            <div class="jl-left">
+              <div class="jl-tabs">
+                <div class="jl-tab cur" data-flip="move"><svg class="jp"><use href="#jp-folder"/></svg></div>
+                <div class="jl-tab" data-flip="move"><svg class="jp"><use href="#jp-running"/></svg></div>
+                <div class="jl-tab tab-toc" data-flip="move"><svg class="jp"><use href="#jp-toc"/></svg></div>
+                <div class="jl-tab" data-flip="move"><svg class="jp"><use href="#jp-extension"/></svg></div>
+              </div>
+              <div class="jl-panel jl-fb" data-flip="move">
+                <div class="jl-fb-toolbar">
+                  <div class="jl-newbtn"><svg class="jp"><use href="#jp-add"/></svg></div>
+                  <svg class="jp"><use href="#jp-new-folder"/></svg>
+                  <svg class="jp"><use href="#jp-file-upload"/></svg>
+                  <svg class="jp"><use href="#jp-refresh"/></svg>
+                  <svg class="jp"><use href="#jp-filter"/></svg>
+                </div>
+                <div class="jl-crumbs">
+                  <div class="crumbs-static">
+                    <svg class="jp"><use href="#jp-folder"/></svg>
+                    <span class="crumb-a">/ metanalysis /</span>
+                    <span class="crumb-b">/ metanalysis / experiments /</span>
+                  </div>
+                  <div class="jl-crumbs-input"><span class="typed">metanalysis/</span><i class="jl-caret"></i></div>
+                  <div class="jl-complete"><div class="sel">experiments/</div></div>
+                </div>
+                <div class="jl-listing">
+                  <div class="jl-lhead"><div>Name <svg class="jp s14"><use href="#jp-caret-up"/></svg></div><div>Modified</div><div class="jl-created-cell">Created</div></div>
+                  <div class="jl-lrow dir-a"><div><svg class="jp"><use href="#jp-folder"/></svg>data</div><div>11m ago</div><div class="jl-created-cell">3mo ago</div></div>
+                  <div class="jl-lrow dir-a"><div><svg class="jp"><use href="#jp-folder"/></svg>experiments</div><div>19m ago</div><div class="jl-created-cell">2mo ago</div></div>
+                  <div class="jl-lrow dir-a"><div><svg class="jp"><use href="#jp-folder"/></svg>tests</div><div>42m ago</div><div class="jl-created-cell">2mo ago</div></div>
+                  <div class="jl-lrow dir-a sel"><i class="run-dot"></i><div><svg class="jp"><use href="#jp-notebook"/></svg>Lorenz.ipynb</div><div>36s ago</div><div class="jl-created-cell">5d ago</div></div>
+                  <div class="jl-lrow dir-a"><div><svg class="jp"><use href="#jp-python"/></svg>lorenz.py</div><div>2y ago</div><div class="jl-created-cell">2y ago</div></div>
+                  <div class="jl-lrow dir-a"><div><svg class="jp"><use href="#jp-notebook"/></svg>Data cleaning.ipynb</div><div>18m ago</div><div class="jl-created-cell">1mo ago</div></div>
+                  <div class="jl-lrow dir-a"><div><svg class="jp"><use href="#jp-notebook"/></svg>Analysis.ipynb</div><div>39m ago</div><div class="jl-created-cell">3w ago</div></div>
+                  <div class="jl-lrow dir-a"><div><svg class="jp"><use href="#jp-markdown"/></svg>README.md</div><div>2d ago</div><div class="jl-created-cell">3mo ago</div></div>
+                  <div class="jl-lrow dir-b"><div><svg class="jp"><use href="#jp-notebook"/></svg>baseline.ipynb</div><div>2h ago</div><div class="jl-created-cell">9d ago</div></div>
+                  <div class="jl-lrow dir-b"><div><svg class="jp"><use href="#jp-notebook"/></svg>sweep-rho.ipynb</div><div>19m ago</div><div class="jl-created-cell">2d ago</div></div>
+                  <div class="jl-lrow dir-b"><div><svg class="jp"><use href="#jp-notebook"/></svg>sweep-sigma.ipynb</div><div>1h ago</div><div class="jl-created-cell">2d ago</div></div>
+                  <div class="jl-lrow dir-b"><div><svg class="jp"><use href="#jp-json"/></svg>params.json</div><div>1h ago</div><div class="jl-created-cell">9d ago</div></div>
+                  <div class="jl-lrow dir-b"><div><svg class="jp"><use href="#jp-spreadsheet"/></svg>results.csv</div><div>19m ago</div><div class="jl-created-cell">2d ago</div></div>
+                  <div class="jl-lrow dir-b"><div><svg class="jp"><use href="#jp-markdown"/></svg>NOTES.md</div><div>3d ago</div><div class="jl-created-cell">9d ago</div></div>
+                </div>
+                <div class="spacer"></div>
+                <div class="jl-section-head"><svg class="jp s14"><use href="#jp-caret-down"/></svg>OPEN TABS<span class="act">Close All</span></div>
+                <div class="jl-section-row"><svg class="jp"><use href="#jp-notebook"/></svg>Lorenz.ipynb</div>
+                <div class="jl-section-row"><svg class="jp"><use href="#jp-spreadsheet"/></svg>study.csv</div>
+                <div class="jl-section-row"><svg class="jp"><use href="#jp-toc"/></svg>Table of Contents</div>
+                <div class="jl-section-head"><svg class="jp s14"><use href="#jp-caret-right"/></svg>RECENTLY CLOSED<span class="act">Forget All</span></div>
+              </div>
+            </div>
+
+            <div class="jl-main">
+              <div class="jl-dockpanel">
+                <div class="jl-tabbar">
+                  <div class="jl-dtab cur"><svg class="jp"><use href="#jp-notebook"/></svg>Lorenz.ipynb<span class="dot"></span></div>
+                  <div class="jl-dtab-add"><svg class="jp"><use href="#jp-add"/></svg></div>
+                </div>
+                <div class="jl-widget">
+                  <div class="jl-nbtools">
+                    <svg class="jp"><use href="#jp-save"/></svg>
+                    <svg class="jp"><use href="#jp-add"/></svg>
+                    <svg class="jp"><use href="#jp-cut"/></svg>
+                    <svg class="jp"><use href="#jp-copy"/></svg>
+                    <svg class="jp"><use href="#jp-paste"/></svg>
+                    <svg class="jp"><use href="#jp-run"/></svg>
+                    <svg class="jp"><use href="#jp-stop"/></svg>
+                    <svg class="jp"><use href="#jp-refresh"/></svg>
+                    <svg class="jp"><use href="#jp-fast-forward"/></svg>
+                    <div class="sel">Code <svg class="jp s14"><use href="#jp-caret-down"/></svg></div>
+                    <div class="kname"><span class="jl-dbg-toggle"><svg class="jp"><use href="#jp-bug"/></svg></span>Python 3 (ipykernel)<span class="jl-kstatus"></span></div>
+                  </div>
+                  <div class="jl-dbg-wrap">
+                    <div class="jl-dbg-overlay">Paused in Debugger <svg class="jp"><use href="#jp-run"/></svg><svg class="jp"><use href="#jp-step-over"/></svg><span class="stop"></span></div>
+                  </div>
+                  <div class="jl-nb">
+                    <div class="jl-cell md c1"><i class="bar"></i><div class="prompt"></div>
+                      <div class="jl-md"><h1>The Lorenz Differential Equations</h1><p>Before we start, we import some preliminary libraries. We will also import (below) the accompanying <code>lorenz.py</code> file, which contains the actual solver and plotting routine.</p></div>
+                    </div>
+                    <div class="jl-cell code c2"><i class="bar"></i><div class="prompt">[1]:</div>
+                      <div class="jl-code">
+                        <div class="jl-line"><span class="ln">1</span><span class="t-op">%</span>matplotlib inline</div>
+                        <div class="jl-line"><span class="ln">2</span><span class="t-kw">from</span> ipywidgets <span class="t-kw">import</span> interactive, fixed</div>
+                      </div>
+                    </div>
+                    <div class="jl-cell md c3"><i class="bar"></i><div class="prompt"></div>
+                      <div class="jl-md"><h2>Equations</h2><p>We explore the Lorenz system of differential equations:</p>
+                        <div class="jl-eq"><span>ẋ = σ(y − x)</span><span>ẏ = ρx − y − xz</span><span>ż = −βz + xy</span></div>
+                      </div>
+                    </div>
+                    <div class="jl-cell md c4"><i class="bar"></i><div class="prompt"></div>
+                      <div class="jl-md"><h2>Interactive plot</h2><p>Let’s change (σ, β, ρ) with ipywidgets and examine the trajectories.</p></div>
+                    </div>
+                    <div class="jl-cell code c5"><i class="bar"></i><div class="prompt">[2]:</div>
+                      <div class="jl-code">
+                        <div class="jl-line"><span class="ln">1</span><span class="t-kw">from</span> lorenz <span class="t-kw">import</span> solve_lorenz</div>
+                        <div class="jl-line"><span class="ln">2</span>w <span class="t-op">=</span> interactive(solve_lorenz, sigma<span class="t-op">=</span>(<span class="t-num">0.0</span>, <span class="t-num">50.0</span>), rho<span class="t-op">=</span>(<span class="t-num">0.0</span>, <span class="t-num">50.0</span>))</div>
+                        <div class="jl-line"><span class="ln">3</span>w</div>
+                      </div>
+                    </div>
+                    <div class="jl-cell md c6"><i class="bar"></i><div class="prompt"></div>
+                      <div class="jl-md"><h2>Histograms</h2></div>
+                    </div>
+                    <div class="jl-cell code c7 active"><i class="bar"></i><div class="prompt">[3]:</div>
+                      <div class="jl-code">
+                        <div class="jl-line"><span class="ln">1</span>t, x_t <span class="t-op">=</span> w.result</div>
+                        <div class="jl-line l2"><i class="jl-bp"></i><span class="ln">2</span>xyz_avg <span class="t-op">=</span> x_t.mean(axis<span class="t-op">=</span><span class="t-num">1</span>)</div>
+                        <div class="jl-line"><span class="ln">3</span>plot_histograms(xyz_avg)</div>
+                      </div>
+                    </div>
+                    <div class="jl-cell md c8"><i class="bar"></i><div class="prompt"></div>
+                      <div class="jl-md"><p>The averages of x, y and z settle near the two attractors.</p></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="jl-rcol">
+                <div class="jl-tabbar jl-rtabs1">
+                  <div class="jl-dtab t-csv cur"><svg class="jp"><use href="#jp-spreadsheet"/></svg>study.csv<span class="x">✕</span></div>
+                  <div class="jl-dtab t-toc1"><svg class="jp"><use href="#jp-toc"/></svg>Table of Contents<span class="x">✕</span></div>
+                </div>
+                <div class="jl-widget jl-csvw">
+                  <div class="jl-csvtools">Delimiter: <span class="jl-select">, <svg class="jp s14"><use href="#jp-caret-down"/></svg></span></div>
+                  <div class="jl-grid"><span class="gh"></span><span class="gh">subject</span><span class="gh">group</span><span class="gh">score</span><span class="gh">minutes</span><span class="gi">1</span><span class="">S01</span><span class="">A</span><span class="gn">71.2</span><span class="gn">34</span><span class="gi">2</span><span class="">S02</span><span class="">B</span><span class="gn">64.8</span><span class="gn">41</span><span class="gi">3</span><span class="">S03</span><span class="">A</span><span class="gn">88.1</span><span class="gn">29</span><span class="gi">4</span><span class="">S04</span><span class="">B</span><span class="gn">59.3</span><span class="gn">45</span><span class="gi">5</span><span class="">S05</span><span class="">A</span><span class="gn">77.6</span><span class="gn">31</span><span class="gi">6</span><span class="">S06</span><span class="">B</span><span class="gn">69.0</span><span class="gn">38</span><span class="gi">7</span><span class="">S07</span><span class="">A</span><span class="gn">92.4</span><span class="gn">27</span><span class="gi">8</span><span class="">S08</span><span class="">B</span><span class="gn">61.7</span><span class="gn">44</span><span class="gi">9</span><span class="">S09</span><span class="">A</span><span class="gn">80.3</span><span class="gn">33</span><span class="gi">10</span><span class="">S10</span><span class="">B</span><span class="gn">73.5</span><span class="gn">36</span><span class="gi">11</span><span class="">S11</span><span class="">A</span><span class="gn">85.9</span><span class="gn">30</span><span class="gi">12</span><span class="">S12</span><span class="">B</span><span class="gn">66.2</span><span class="gn">40</span><span class="gi">13</span><span class="">S13</span><span class="">A</span><span class="gn">79.8</span><span class="gn">32</span><span class="gi">14</span><span class="">S14</span><span class="">B</span><span class="gn">70.1</span><span class="gn">39</span><span class="gi">15</span><span class="">S15</span><span class="">A</span><span class="gn">83.0</span><span class="gn">28</span><span class="gi">16</span><span class="">S16</span><span class="">B</span><span class="gn">62.5</span><span class="gn">43</span><span class="gi">17</span><span class="">S17</span><span class="">A</span><span class="gn">90.7</span><span class="gn">26</span><span class="gi">18</span><span class="">S18</span><span class="">B</span><span class="gn">68.4</span><span class="gn">37</span><span class="gi">19</span><span class="">S19</span><span class="">A</span><span class="gn">75.2</span><span class="gn">35</span><span class="gi">20</span><span class="">S20</span><span class="">B</span><span class="gn">63.9</span><span class="gn">42</span></div>
+                </div>
+                <div class="jl-tabbar jl-rtabs2"><div class="jl-dtab cur"><svg class="jp"><use href="#jp-toc"/></svg>Table of Contents<span class="x">✕</span></div></div>
+                <div class="jl-widget jl-toc">
+                  <div class="jl-toc-title">LORENZ.IPYNB</div>
+                  <div class="jl-toc-tools">
+                    <span class="tb jump-back"><svg class="jp"><use href="#jp-undo"/></svg></span>
+                    <span class="tb jump-fwd disabled"><svg class="jp"><use href="#jp-redo"/></svg></span>
+                    <span class="tb"><svg class="jp"><use href="#jp-numbering"/></svg></span>
+                    <span class="tb push"><svg class="jp"><use href="#jp-collapse-all"/></svg></span>
+                    <span class="tb"><svg class="jp"><use href="#jp-ellipses"/></svg></span>
+                  </div>
+                  <div class="jl-toc-item">The Lorenz Differential Equations</div>
+                  <div class="jl-toc-item h2">Equations</div>
+                  <div class="jl-toc-item h2 toc-plot">Interactive plot</div>
+                  <div class="jl-toc-item h2 toc-hist cur">Histograms</div>
+                </div>
+                <div class="jl-dropzone"></div>
+              </div>
+            </div>
+
+            <div class="jl-right">
+              <div class="jl-tabs">
+                <div class="jl-tab"><svg class="jp"><use href="#jp-property-inspector"/></svg></div>
+                <div class="jl-tab"><svg class="jp"><use href="#jp-bug"/></svg></div>
+              </div>
+            </div>
+          </div>
+          <div class="jl-statusbar">
+            <span>5</span><svg class="jp"><use href="#jp-kernel"/></svg>
+            <span>Python 3 (ipykernel) | Idle</span>
+            <span class="push"></span>
+            <span class="jl-sb-right"><span>Mode: Command</span><span class="jl-sb-cell">Cell 7/19</span><span>Ln 1, Col 1</span><span>Lorenz.ipynb</span><span>0</span><svg class="jp"><use href="#jp-bell"/></svg></span>
+          </div>
+
+          <div class="jl-menu jl-menu-move">
+            <div>Switch Sidebar Side</div>
+            <div class="sub-trigger">Move Widget To <span>›</span>
+              <div class="jl-menu sub">
+                <div class="main-area">Move to Main Area</div>
+                <div class="dis">Move to Left Sidebar</div>
+                <div>Move to Right Sidebar</div>
+                <div>Move to Down Area</div>
+              </div>
+            </div>
+            <div class="dis">Shift+Right Click for Browser Menu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tour-overlay">
+    <div class="tour-spot empty"></div>
+    <div class="tour-bubble">
+      <div class="tb-title"></div>
+      <div class="tb-body"></div>
+      <div class="tb-foot"><span class="tb-count"></span><span class="tb-skip">Skip</span><span class="tb-back">Back</span><span class="tb-next">Next</span></div>
+      <i class="tb-arrow"></i>
+    </div>
+    <div class="tour-cursor"><svg><use href="#cursor-arrow"/></svg><span class="ripple"></span><span class="drag-tab">Table of Contents</span></div>
+    <div class="tour-key">Tab</div>
+  </div>
+
+  <aside class="notes">
+    <p><b>Before the start:</b> this title stays up while people sit down.</p>
+    <p>Hello, I am Mike from OpenTeams. Darshan Paudyal could not travel; the lint and build parts of this talk are his work.</p>
+    <p>Each click moves the tour one step. The window grows to full screen, then each feature animates.</p>
+    <ul>
+      <li>Activity bar at the top (also bottom, left, right).</li>
+      <li>Table of Contents moved out of the sidebar into the main area.</li>
+      <li>Jump back to the last edited cell: new buttons in the Table of Contents.</li>
+      <li>"Cell 5/19" in the status bar.</li>
+      <li>Breadcrumbs: click, type, Tab completes, Enter.</li>
+      <li>Date Created column (needs jupyter-server 2.18 or later for accurate values).</li>
+      <li>Debugger overlay with continue, step, stop.</li>
+    </ul>
+    <p>Last step returns to the title: "How did we ship this many in one minor release?"</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 2. THANKS FIRST -->
+<section class="slide" id="thanks-first" data-chapter="Thanks first" data-title="Thanks first" data-time="0:30">
+  <div class="kicker"><svg class="i"><use href="#i-heart-handshake"/></svg>Before we start</div>
+  <h2 class="title">This talk is also a report, and a thank-you</h2>
+  <div class="thanks4 stagger vcenter">
+    <div class="card logo-card">
+      <div class="logo-plate"><img class="lg-jf" src="assets/img/logos/jupyter-foundation.svg" alt="Jupyter Foundation"></div>
+      <div class="lc-body"><div class="lc-role">Funded</div><p>four community proposals, in the Foundation’s first funding round</p></div>
+    </div>
+    <div class="card logo-card">
+      <div class="logo-plate two"><img class="lg-ot-sm" src="assets/img/logos/openteams.svg" alt="OpenTeams"><img class="lg-qs-sm" src="assets/img/logos/quansight.svg" alt="Quansight"></div>
+      <div class="lc-body"><div class="lc-role">Delivered</div><p>the four proposals, working together</p></div>
+    </div>
+    <div class="card logo-card">
+      <div class="logo-plate community"><svg class="jl-mark" viewBox="0 0 39 51"><use href="#jp-jupyter-full"/></svg><div class="cm-num">95</div><div class="cm-lbl">contributors<br>to 4.6</div></div>
+      <div class="lc-body"><div class="lc-role">The community</div><p>reviewed, triaged, tested and adopted the work, and reported problems</p></div>
+    </div>
+    <div class="card logo-card">
+      <div class="logo-plate"><img class="lg-ot" src="assets/img/logos/openteams.svg" alt="OpenTeams"></div>
+      <div class="lc-body"><div class="lc-role">Travel</div><p>OpenTeams paid for my trip to this summit</p></div>
+    </div>
+  </div>
+  <p class="foot-link bottom"><svg class="i"><use href="#i-file-text"/></svg>Progress reports: <span class="mono">jupyter-governance.github.io/funding-proposals</span></p>
+  <aside class="notes">
+    <p>Thank the Foundation first: this is the first round of community funded proposals, and this talk is part of the report.</p>
+    <p>OpenTeams and Quansight delivered the work together. The community made it usable: reviews, triage, testing the pre-releases, adopting the tools and reporting what broke. Call out people in the room. OpenTeams paid for the travel.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 3. NUMBERS -->
+<section class="slide" id="numbers" data-chapter="What’s new in 4.6" data-title="4.6 in numbers" data-time="0:45">
+  <div class="kicker"><svg class="jp"><use href="#jp-jupyter"/></svg>JupyterLab 4.6 · released 18 June 2026</div>
+  <h2 class="title">One of the largest minor releases</h2>
+  <div class="numbers-grid mt-l">
+    <div class="stat hero c-orange">
+      <div class="num" data-count="68">68</div>
+      <div class="lbl"><b>new features and enhancements</b></div>
+    </div>
+    <div class="numbers-side">
+      <div class="stat"><div class="num" data-count="97">97</div><div class="lbl">bug fixes</div></div>
+      <div class="stat"><div class="num" data-count="38">38</div><div class="lbl">documentation improvements</div></div>
+      <div class="stat"><div class="num" data-count="95">95</div><div class="lbl">contributors, <b>39</b> of them first-time</div></div>
+      <div class="stat"><div class="num" data-count="171">171</div><div class="lbl">maintenance tasks, <b>a record</b></div></div>
+    </div>
+  </div>
+  <div class="row ships bottom">
+    <span class="muted">Also in</span>
+    <span class="chip c-orange"><svg class="jp"><use href="#jp-notebook"/></svg>Notebook 7.6</span>
+    <span class="chip c-blue"><svg class="i"><use href="#i-globe"/></svg>JupyterLite 0.8</span>
+    <span class="spacer"></span>
+    <span class="subtle small">Among minor releases, only 3.1 merged more pull requests.</span>
+  </div>
+  <aside class="notes">
+    <p>68 features and enhancements, 97 bug fixes, 38 documentation improvements.</p>
+    <p>95 contributors, 39 of them new to JupyterLab. 171 maintenance tasks: dependencies, code quality, CI speed. That last number is where the Foundation money shows.</p>
+    <p>The same changes reach Notebook 7.6 and JupyterLite 0.8.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 4. NOTEBOOK 7.6 -->
+<section class="slide" id="notebook76" data-chapter="What’s new in 4.6" data-title="Notebook 7.6 scratchpad" data-time="0:30">
+  <div class="nb76-head">
+    <div>
+      <div class="kicker"><svg class="jp"><use href="#jp-notebook"/></svg>Notebook 7.6</div>
+      <h2 class="title">A scratchpad console</h2>
+      <p class="lead">Try code on the same kernel without adding cells to the notebook.</p>
+    </div>
+    <div class="keys" data-show="1" data-anim="scale"><kbd>Ctrl</kbd><span>+</span><kbd>B</kbd></div>
+  </div>
+  <div class="nb76-shot mt">
+    <div class="nb76-clip"><img src="assets/img/notebook-scratchpad-top.webp" alt="Notebook 7.6 with a scratchpad console on the right"></div>
+    <div class="nb76-ring" data-show="1" data-anim="fade"></div>
+  </div>
+  <p class="small muted bottom" data-show="2">Also in 7.6: “Close and Shut Down” asks before it stops the kernel.</p>
+  <aside class="notes">
+    <p>Notebook 7.6 gets a scratchpad console: Ctrl+B, or File, New, Scratchpad console.</p>
+    <p>It shares the notebook kernel, so you can inspect variables without adding cells.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 5. AND MORE -->
+<section class="slide" id="and-more" data-chapter="What’s new in 4.6" data-title="And more" data-time="0:45">
+  <div class="kicker"><svg class="i"><use href="#i-sparkles"/></svg>Also in 4.6</div>
+  <h2 class="title">And more</h2>
+  <div class="tiles mt stagger">
+    <div class="tile"><div class="icon-badge s c-orange"><svg class="i"><use href="#i-keyboard"/></svg></div><div><h4>Shortcuts for any command</h4><p>Add them in the shortcut editor. No JSON needed.</p></div></div>
+    <div class="tile"><div class="icon-badge s c-orange"><svg class="i"><use href="#i-replace"/></svg></div><div><h4>Find and Replace in the Edit menu</h4><p><kbd>Ctrl</kbd> <kbd>H</kbd>, and <kbd>Ctrl</kbd> <kbd>Y</kbd> to redo on Windows and Linux.</p></div></div>
+    <div class="tile"><div class="icon-badge s c-orange"><svg class="i"><use href="#i-languages"/></svg></div><div><h4>Language packs from Settings</h4><p>“Install more languages…” opens the Extension Manager.</p></div></div>
+    <div class="tile"><div class="icon-badge s c-orange"><svg class="i"><use href="#i-ghost"/></svg></div><div><h4>Ghost text with highlighting</h4><p>Inline completions are coloured like code, at every cursor.</p></div></div>
+    <div class="tile"><div class="icon-badge s c-orange"><svg class="i"><use href="#i-zoom-in"/></svg></div><div><h4>Zoom one panel</h4><p><kbd>Ctrl</kbd> + mouse wheel. Other panels do not change.</p></div></div>
+    <div class="tile"><div class="icon-badge s c-orange"><svg class="i"><use href="#i-columns-2"/></svg></div><div><h4>Split a tab four ways</h4><p>Left, right, up or down.</p></div></div>
+    <div class="tile"><div class="icon-badge s c-orange"><svg class="i"><use href="#i-accessibility"/></svg></div><div><h4>Keyboard and screen readers</h4><p>The terminal no longer keeps the keyboard focus. Focus is easier to see.</p></div></div>
+    <div class="tile"><div class="icon-badge s c-orange"><svg class="i"><use href="#i-square-terminal"/></svg></div><div><h4>Open in Terminal</h4><p>From any folder in the file browser.</p></div></div>
+    <div class="tile"><div class="icon-badge s c-orange"><svg class="i"><use href="#i-shield-check"/></svg></div><div><h4>Fewer mistakes</h4><p>JupyterLab asks before it deletes a cell. Keys 1 to 6 no longer turn code into markdown.</p></div></div>
+  </div>
+  <aside class="notes">
+    <p>Pick two or three; do not read the grid.</p>
+    <p>Shortcuts for any command from the UI. Find and Replace in the Edit menu. Language packs from Settings.</p>
+    <p>Accessibility: keyboard focus fixes across the terminal, console, breadcrumbs and dialogs.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 6. EXTENSION AUTHORS -->
+<section class="slide" id="authors" data-chapter="What’s new in 4.6" data-title="For extension authors" data-time="0:30">
+  <div class="kicker"><svg class="i"><use href="#i-puzzle"/></svg>For extension authors</div>
+  <h2 class="title">Faster builds, fewer dependencies</h2>
+  <div class="authors stagger vcenter">
+    <div class="author-row"><div class="big-x hl">~5×</div><div><h4>faster builds</h4><p>JupyterLab, Notebook and extensions moved from webpack to Rspack.</p></div></div>
+    <div class="author-row"><div class="icon-badge c-build"><svg class="i"><use href="#i-package"/></svg></div><div><h4>Build an extension without installing JupyterLab</h4><p>The build tooling now lives in <code>jupyter-builder</code>.</p></div></div>
+    <div class="author-row"><div class="icon-badge c-lint"><svg class="i"><use href="#i-shield-check"/></svg></div><div><h4>Jupyter-specific lint rules in the extension template</h4><p><code>@jupyter/eslint-plugin</code> is on by default for new extensions.</p></div></div>
+  </div>
+  <p class="foot-link bottom"><svg class="i"><use href="#i-book-open"/></svg>Extension migration guide: 4.5 to 4.6</p>
+  <aside class="notes">
+    <p>For extension authors: builds about five times faster after the move to Rspack.</p>
+    <p>You no longer need JupyterLab installed to build an extension. That and the lint rules are two of the four funded projects. Which brings us to the second part.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 7. SECTION: HOW -->
+<section class="slide section-slide" id="how" data-chapter="How we got here" data-title="Section: how did we get here" data-time="0:15" data-transition="zoom">
+  <div class="kicker">Part 2</div>
+  <h2 class="title xl">How did we get here?</h2>
+  <p class="lead">Four proposals funded by the Jupyter Foundation.</p>
+  <div class="pillars mt-l stagger">
+    <div class="pillar c-prototype"><div class="icon-badge"><svg class="i"><use href="#i-flask-conical"/></svg></div><div class="p-verb">Prototype</div><div class="p-tool">Plugin Playground</div></div>
+    <div class="pillar c-lint"><div class="icon-badge"><svg class="i"><use href="#i-shield-check"/></svg></div><div class="p-verb">Lint</div><div class="p-tool">@jupyter/eslint-plugin</div></div>
+    <div class="pillar c-build"><div class="icon-badge"><svg class="i"><use href="#i-hammer"/></svg></div><div class="p-verb">Build</div><div class="p-tool">jupyter-builder</div></div>
+    <div class="pillar c-test"><div class="icon-badge"><svg class="i"><use href="#i-camera"/></svg></div><div class="p-verb">Test</div><div class="p-tool">UI tests</div></div>
+  </div>
+  <aside class="notes">
+    <p>Four proposals, one per verb in the title of this talk.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 8. CHEAP CODE -->
+<section class="slide" id="cheap-code" data-chapter="How we got here" data-title="AI usage in pull requests" data-time="1:00">
+  <div class="kicker"><svg class="i"><use href="#i-bot"/></svg>The AI era</div>
+  <h2 class="title">Writing code became cheap</h2>
+  <div class="ai-layout mt">
+    <div class="ai-hero">
+      <div class="ai-num"><span data-count="52">52</span><span class="pct">%</span></div>
+      <p class="ai-lbl">of JupyterLab 4.6 pull requests that answered the AI question say <b>AI generated some of the content</b></p>
+      <p class="src">87 of 168 · the PR template asks since February 2026</p>
+    </div>
+    <figure class="mchart" aria-label="Share of pull requests that say AI generated some of the content, by month opened, February to September 2026">
+      <figcaption class="mc-title">Share of PRs with AI-generated content, by month opened</figcaption>
+      <div class="mc-plot">
+        <div class="mc-grid"><span style="--y:100">100%</span><span style="--y:50">50%</span><span style="--y:0">0</span></div>
+        <div class="mc-bars">
+          <div class="mc-col" style="--v:38;--i:0" title="February 2026: 10 of 26 PRs (38%)"><b class="mc-val">38%</b><i></i><span class="mc-x">Feb</span></div>
+          <div class="mc-col" style="--v:45;--i:1" title="March 2026: 19 of 42 PRs (45%)"><b class="mc-val mc-quiet">45%</b><i></i><span class="mc-x">Mar</span></div>
+          <div class="mc-col" style="--v:58;--i:2" title="April 2026: 21 of 36 PRs (58%)"><b class="mc-val mc-quiet">58%</b><i></i><span class="mc-x">Apr</span></div>
+          <div class="mc-col" style="--v:56;--i:3" title="May 2026: 29 of 52 PRs (56%)"><b class="mc-val mc-quiet">56%</b><i></i><span class="mc-x">May</span></div>
+          <div class="mc-col mc-release" style="--v:72;--i:4" title="June 2026: 33 of 46 PRs (72%)"><b class="mc-val">72%</b><i></i><span class="mc-x">Jun<em>4.6.0 released</em></span></div>
+          <div class="mc-col" style="--v:87;--i:5" title="July 2026: 33 of 38 PRs (87%)"><b class="mc-val mc-quiet">87%</b><i></i><span class="mc-x">Jul</span></div>
+          <div class="mc-col" style="--v:86;--i:6" title="August 2026: 18 of 21 PRs (86%)"><b class="mc-val mc-quiet">86%</b><i></i><span class="mc-x">Aug</span></div>
+          <div class="mc-col" style="--v:85;--i:7" title="September 2026: 11 of 13 PRs (85%)"><b class="mc-val">85%</b><i></i><span class="mc-x">Sep</span></div>
+        </div>
+      </div>
+    </figure>
+  </div>
+  <div class="ai-minis" data-show="1">
+    <div class="ai-mini"><b>28 of 30</b><span>merged PRs that changed a UI test from June to September were AI-assisted</span></div>
+    <div class="ai-mini"><b>39</b><span>first-time contributors to JupyterLab 4.6</span></div>
+  </div>
+  <div class="still" data-show="2">
+    <span class="still-lbl">Still expensive:</span>
+    <span class="chip c-prototype"><svg class="i"><use href="#i-flask-conical"/></svg>prototyping</span>
+    <span class="chip c-lint"><svg class="i"><use href="#i-users"/></svg>reviewing</span>
+    <span class="chip c-build"><svg class="i"><use href="#i-hammer"/></svg>building</span>
+    <span class="chip c-test"><svg class="i"><use href="#i-camera"/></svg>testing</span>
+  </div>
+  <aside class="notes">
+    <p>Since February the JupyterLab PR template asks whether AI generated some of the content.</p>
+    <p>In 4.6, 87 of the 168 PRs that answered said yes: 52%. By the month a PR was opened: February 38%, March 45%, April 58%, May 56%, June 72%, July 87%, August 86%, September 85%. Since 4.6.0, 87 of 106 merged PRs (82%).</p>
+    <p>(Click) For UI tests it is 28 of 30 from June to September. And 4.6 had 39 first-time contributors.</p>
+    <p>(Click) What did not get cheaper: prototyping, reviewing, building and testing.</p>
+    <p>Method: PR list from the 4.6.0 changelog (376 PRs, 333 by people); the first bullet of the "AI usage" section, plus free-text answers read by hand. Script: tools/ai_usage.py.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 9. PIPELINE -->
+<section class="slide" id="pipeline" data-chapter="How we got here" data-title="One pipeline, four proposals" data-time="0:45">
+  <div class="kicker"><svg class="i"><use href="#i-workflow"/></svg>From idea to release</div>
+  <h2 class="title">One pipeline, four proposals</h2>
+  <div class="pipe mt-l">
+    <div class="pipe-track"><i class="pipe-pulse"></i></div>
+    <div class="pipe-node c-orange"><div class="icon-badge"><svg class="i"><use href="#i-lightbulb"/></svg></div><div class="pn-name">Idea</div></div>
+    <div class="pipe-node c-prototype"><div class="icon-badge"><svg class="i"><use href="#i-flask-conical"/></svg></div><div class="pn-name">Prototype</div><div class="pn-tool">Plugin Playground</div><div class="pn-gain" data-show="1">from idea to a running plugin in the browser</div></div>
+    <div class="pipe-node c-lint"><div class="icon-badge"><svg class="i"><use href="#i-shield-check"/></svg></div><div class="pn-name">Lint</div><div class="pn-tool">@jupyter/eslint-plugin</div><div class="pn-gain" data-show="1">convention errors in seconds, before review</div></div>
+    <div class="pipe-node c-build"><div class="icon-badge"><svg class="i"><use href="#i-hammer"/></svg></div><div class="pn-name">Build</div><div class="pn-tool">jupyter-builder</div><div class="pn-gain" data-show="1">no JupyterLab install; separate releases</div></div>
+    <div class="pipe-node c-test"><div class="icon-badge"><svg class="i"><use href="#i-camera"/></svg></div><div class="pn-name">Test</div><div class="pn-tool">UI tests</div><div class="pn-gain" data-show="1">15 minutes, same pixels on your laptop</div></div>
+    <div class="pipe-node c-human"><div class="icon-badge"><svg class="i"><use href="#i-users"/></svg></div><div class="pn-name">Review</div><div class="pn-tool">people</div><div class="pn-gain" data-show="1">time for what only people can do</div></div>
+  </div>
+  <aside class="notes">
+    <p>Every contribution passes the same pipeline. The four proposals each shorten one stage before a person has to look at it.</p>
+    <p>(Click) What each one saves.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 10. PROTOTYPE -->
+<section class="slide" id="prototype" data-chapter="Prototype" data-title="Plugin Playground 1.0" data-time="1:15">
+  <div class="pillar-nav"><span class="on c-prototype">prototype</span><span>lint</span><span>build</span><span>test</span></div>
+  <div class="kicker prototype"><svg class="i"><use href="#i-flask-conical"/></svg>Prototype</div>
+  <h2 class="title">Plugin Playground 1.0</h2>
+  <div class="proto mt">
+    <ol class="steps stagger">
+      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-wand-sparkles"/></svg></span><span><b>Describe it</b> to the AI, or start from a file</span></li>
+      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-puzzle"/></svg></span><span><b>Insert</b> tokens and commands from the sidebar</span></li>
+      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-play"/></svg></span><span><b>Load</b> the file as an extension, no build</span></li>
+      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-refresh-cw"/></svg></span><span><b>Run on save</b> while you iterate</span></li>
+      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-link"/></svg></span><span><b>Share</b> a link for review</span></li>
+      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-package"/></svg></span><span><b>Export</b> a wheel or a zip for a real repository</span></li>
+    </ol>
+    <figure class="proto-shot">
+      <img class="shot" src="assets/img/ai-conversation-plugin-running.png" alt="Plugin Playground: an AI chat writes a snippets plugin, which runs in the same JupyterLite window">
+      <figcaption><span class="chip c-prototype small-chip"><svg class="i"><use href="#i-globe"/></svg>runs in JupyterLite: nothing to install</span></figcaption>
+    </figure>
+  </div>
+  <div class="credit bottom"><span class="cr-text">Built by <span class="person"><img class="av" src="assets/img/avatars/MUFFANUJ.webp" alt=""><b>Anuj Singh</b></span> (OpenTeams). Design clinic by <span class="person"><img class="av" src="assets/img/avatars/smeragoel.webp" alt=""><b>Smera Goel</b></span> (Quansight).</span><span class="mono">pip install jupyterlab-plugin-playground</span></div>
+  <aside class="notes">
+    <p>Plugin Playground 1.0, released in May. It runs in local JupyterLab, on Binder and in JupyterLite, so there is nothing to install.</p>
+    <p>On the right: the AI loads a plugin-authoring skill, lists tokens and commands, writes a snippets plugin, and the plugin runs in the same window.</p>
+    <p>When it works: share a link, or export a wheel or a zip and move to a normal repository with CI.</p>
+    <p>Anuj Singh built 1.0; Smera Goel from Quansight ran a design clinic for it.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 11. PROTOTYPE AI -->
+<section class="slide" id="prototype-ai" data-chapter="Prototype" data-title="AI inside the playground" data-time="0:45">
+  <div class="pillar-nav"><span class="on c-prototype">prototype</span><span>lint</span><span>build</span><span>test</span></div>
+  <div class="kicker prototype"><svg class="i"><use href="#i-sparkles"/></svg>Prototype</div>
+  <h2 class="title">How AI helps in the playground</h2>
+  <div class="grid g3 mt-l stagger">
+    <div class="card"><div class="icon-badge c-prototype"><svg class="i"><use href="#i-server-off"/></svg></div><h3>No server needed</h3><p>Built on <code>jupyterlite/ai</code>, so it works in JupyterLite and on Binder too.</p></div>
+    <div class="card"><div class="icon-badge c-prototype"><svg class="i"><use href="#i-scroll-text"/></svg></div><h3>A guide for writing plugins</h3><p>The AI follows written instructions, so first drafts have the structure that the playground expects.</p></div>
+    <div class="card"><div class="icon-badge c-prototype"><svg class="i"><use href="#i-mouse-pointer-click"/></svg></div><h3>The same commands as you</h3><p>The AI runs JupyterLab commands: create, load, export, share.</p></div>
+  </div>
+  <div class="row mt-l small muted" data-show="1">
+    <svg class="i hl-prototype"><use href="#i-git-pull-request"/></svg>
+    <span>We sent four improvements to <code>jupyterlite/ai</code>. Next: code completion and error checking (LSP) in JupyterLite.</span>
+  </div>
+  <aside class="notes">
+    <p>Why jupyterlite/ai and not jupyter-ai: it needs no server, so the same AI works in JupyterLite.</p>
+    <p>Tool calls map to the same JupyterLab commands as the buttons. AI actions and manual actions take the same path, which makes them easy to debug.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 12. LINT -->
+<section class="slide" id="lint" data-chapter="Lint" data-title="@jupyter/eslint-plugin" data-time="1:00">
+  <div class="pillar-nav"><span>prototype</span><span class="on c-lint">lint</span><span>build</span><span>test</span></div>
+  <div class="kicker lint"><svg class="i"><use href="#i-shield-check"/></svg>Lint</div>
+  <h2 class="title">@jupyter/eslint-plugin</h2>
+  <div class="lint-layout mt">
+    <div class="lint-left">
+      <div class="rules-count"><span data-count="8">8</span><svg class="i"><use href="#i-arrow-right"/></svg><span class="hl-lint" data-count="23">23</span></div>
+      <div class="lbl muted">rules, from 1.0 in May to 1.3 in September</div>
+      <div class="adopt mt">
+        <div class="small subtle">Used by</div>
+        <div class="adopt-chips"><span class="chip">extension template</span><span class="chip">jupyter-collaboration</span><span class="chip">jupyterlab-git</span><span class="chip">jupyter-chat</span><span class="chip">ipyparallel</span></div>
+      </div>
+    </div>
+    <div class="rule-groups stagger">
+      <div class="rg"><svg class="i"><use href="#i-puzzle"/></svg><b>Plugins</b><span class="n">4</span><code>plugin-activation-args</code></div>
+      <div class="rg"><svg class="i"><use href="#i-languages"/></svg><b>Translations</b><span class="n">4</span><code>no-untranslated-string</code></div>
+      <div class="rg"><svg class="i"><use href="#i-memory-stick"/></svg><b>Memory leaks</b><span class="n">5</span><code>require-signal-cleanup</code></div>
+      <div class="rg"><svg class="i"><use href="#i-camera"/></svg><b>UI tests</b><span class="n">6</span><code>galata-prefer-notebook-cell-helper</code></div>
+      <div class="rg"><svg class="i"><use href="#i-zap"/></svg><b>Startup and deployment</b><span class="n">2</span><code>prefer-lazy-imports</code></div>
+      <div class="rg"><svg class="i"><use href="#i-settings-2"/></svg><b>Commands and settings</b><span class="n">2</span><code>no-schema-enum</code></div>
+    </div>
+  </div>
+  <div class="credit bottom"><span class="cr-text">Led by <span class="person"><img class="av" src="assets/img/avatars/Darshan808.webp" alt=""><b>Darshan Paudyal</b></span> (OpenTeams).</span><span class="mono">npm i -D @jupyter/eslint-plugin</span></div>
+  <aside class="notes">
+    <p>Darshan led this one. The rules catch what TypeScript cannot: conventions one level above the type system.</p>
+    <p>Example: a plugin whose activate arguments are in the wrong order. Both are tokens, both type-check, the plugin fails at activation.</p>
+    <p>8 rules at 1.0 in May, 23 in 1.3. It is in the extension template, so every new extension gets it.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 13. LINT FOR AGENTS -->
+<section class="slide" id="lint-agents" data-chapter="Lint" data-title="Lint rules for agents" data-time="1:00">
+  <div class="pillar-nav"><span>prototype</span><span class="on c-lint">lint</span><span>build</span><span>test</span></div>
+  <div class="kicker lint"><svg class="i"><use href="#i-bot"/></svg>Lint</div>
+  <h2 class="title s">Agents can skip AGENTS.md.<br>They cannot skip a lint error.</h2>
+  <div class="vs mt">
+    <div class="card vs-card">
+      <div class="vs-head"><svg class="i"><use href="#i-file-text"/></svg>AGENTS.md</div>
+      <ul class="facts">
+        <li><b>68%</b> of instructions followed when there are 500 of them</li>
+        <li><b>+20%</b> cost, and no better results in general</li>
+        <li>When an agent skips a line, nothing fails</li>
+      </ul>
+      <p class="vs-verdict bad">Sometimes followed, and no error when it is not</p>
+    </div>
+    <div class="card vs-card" data-show="1" data-anim="right">
+      <div class="vs-head"><svg class="i"><use href="#i-shield-check"/></svg>A lint rule</div>
+      <div class="term small-term"><pre><span class="u">ui-tests/tests/run-cell.spec.ts</span>
+  <span class="dim">12:3</span>  <span class="err">error</span>  Use page.notebook.setCell() / runCell()
+               instead of raw cell selectors
+               <span class="dim">jupyter/galata-prefer-notebook-cell-helper</span></pre></div>
+      <p class="vs-verdict good">Runs every time. Names the file, the line and the fix.</p>
+    </div>
+  </div>
+  <blockquote class="quote mt-l" data-show="2">The agent does not need to know the rule. The linter tells it.</blockquote>
+  <aside class="notes">
+    <p>Models are good at code they have seen often. Galata helpers and Lumino signals are a thin slice of the internet.</p>
+    <p>AGENTS.md helps, but: with 500 instructions the best model followed 68% (IFScale). Context files raised cost by over 20% without improving success in general (Evaluating AGENTS.md, 2026). And when a line is skipped, nothing fails.</p>
+    <p>(Click) A lint rule runs every time and the error names the fix. Agents are very good at reading an error and acting on it.</p>
+    <p>From Darshan's OpenTeams post "Your AI Agent Ignored AGENTS.md. Your Linter Won't Let It."</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 14. LINT RECIPE -->
+<section class="slide" id="lint-recipe" data-chapter="Lint" data-title="When a custom rule pays off" data-time="0:45">
+  <div class="pillar-nav"><span>prototype</span><span class="on c-lint">lint</span><span>build</span><span>test</span></div>
+  <div class="kicker lint"><svg class="i"><use href="#i-list-checks"/></svg>Lint · reusable</div>
+  <h2 class="title">When should you write a custom lint rule?</h2>
+  <div class="recipe vcenter">
+    <ol class="criteria stagger">
+      <li><span class="n">1</span>TypeScript cannot check the convention</li>
+      <li><span class="n">2</span>It is rare in public code, so models have not learned it</li>
+      <li><span class="n">3</span>Breaking it causes no error</li>
+      <li><span class="n">4</span>The error message can say what to do instead</li>
+    </ol>
+    <div class="recipe-side">
+      <p class="lead tight" data-show="1">Wrote the same review comment three times? <b>That comment is your rule.</b></p>
+      <div class="term mt" data-show="2"><div class="bar"><i></i><i></i><i></i><span>AGENTS.md</span></div><pre><span class="k">## Before you finish</span>
+- Run <span class="s">`jlpm eslint`</span> and fix every
+  <span class="s">`jupyter/*`</span> error.</pre></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Four conditions for a rule worth writing. If you typed the same review comment three times, you have the spec.</p>
+    <p>Agents are good at writing ESLint rules, because rule APIs are common in public code even when your conventions are not.</p>
+    <p>Keep AGENTS.md, but give it one job: point at the linter.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 15. BUILD -->
+<section class="slide" id="build" data-chapter="Build" data-title="jupyter-builder" data-time="1:00">
+  <div class="pillar-nav"><span>prototype</span><span>lint</span><span class="on c-build">build</span><span>test</span></div>
+  <div class="kicker build"><svg class="i"><use href="#i-hammer"/></svg>Build</div>
+  <h2 class="title">jupyter-builder</h2>
+  <div class="build-layout mt">
+    <div class="b-col">
+      <div class="b-head muted">Before</div>
+      <div class="b-box ext"><svg class="i"><use href="#i-puzzle"/></svg>your extension</div>
+      <div class="b-arrow">needs to build</div>
+      <div class="b-box heavy"><svg class="jp"><use href="#jp-jupyter"/></svg>all of JupyterLab
+        <span class="b-note">server, application, every core package</span></div>
+      <p class="b-pain small"><svg class="i bad"><use href="#i-repeat"/></svg>Packagers: <code>jupyterlab_pygments</code> needs JupyterLab to build, and JupyterLab includes it.</p>
+    </div>
+    <div class="b-col" data-show="1" data-anim="right">
+      <div class="b-head hl-build">Now</div>
+      <div class="b-box ext"><svg class="i"><use href="#i-puzzle"/></svg>your extension</div>
+      <div class="b-arrow">needs to build</div>
+      <div class="b-row">
+        <div class="b-box light"><svg class="i"><use href="#i-package"/></svg>jupyter-builder<span class="b-note">PyPI and npm</span></div>
+        <div class="b-box light"><svg class="i"><use href="#i-file-check"/></svg>@jupyterlab/core-meta<span class="b-note">compatibility metadata</span></div>
+      </div>
+      <div class="term mt-s"><pre><span class="del">- jupyter labextension build .</span>
+<span class="add">+ jupyter-builder build .</span>  <span class="dim"># --core-version 4.4.x</span></pre></div>
+    </div>
+  </div>
+  <div class="credit bottom"><span class="cr-text">Led by <span class="person"><img class="av" src="assets/img/avatars/Darshan808.webp" alt=""><b>Darshan Paudyal</b></span> (OpenTeams). Started in GSoC 2024 by Ronan Coutinho, mentored by Frédéric Collonval.</span></div>
+  <aside class="notes">
+    <p>Darshan led this one too. Before: to build an extension you installed all of JupyterLab, because the build tooling lived in the JupyterLab repository.</p>
+    <p>That hurt Linux packagers (a circular dependency), and extension authors whose build changed with every JupyterLab upgrade.</p>
+    <p>(Click) Now: jupyter-builder on PyPI and npm. Compatibility is checked against published metadata, so no JupyterLab install. It is backwards compatible with @jupyterlab/builder.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 16. BUILD STORY -->
+<section class="slide" id="build-story" data-chapter="Build" data-title="A fix in 24 hours" data-time="0:45">
+  <div class="pillar-nav"><span>prototype</span><span>lint</span><span class="on c-build">build</span><span>test</span></div>
+  <div class="kicker build"><svg class="i"><use href="#i-timer"/></svg>Build</div>
+  <h2 class="title">A fix in 24 hours, without a JupyterLab release</h2>
+  <div class="timeline vcenter">
+    <div class="tl-line"><i></i></div>
+    <div class="tl-item" data-show="1"><div class="tl-dot"></div><div class="tl-when">Rspack 2.0</div><p>The new bundler switched to Module Federation v2 by accident.</p></div>
+    <div class="tl-item" data-show="2"><div class="tl-dot bad-dot"></div><div class="tl-when">Report</div><p>Extensions that use older shared packages break. The jupyter-chat maintainers report it.</p></div>
+    <div class="tl-item" data-show="3"><div class="tl-dot good-dot"></div><div class="tl-when">Under 24 hours</div><p>A jupyter-builder minor release goes back to Module Federation v1.</p></div>
+    <div class="tl-item" data-show="4"><div class="tl-dot"></div><div class="tl-when">For everyone else</div><p>No JupyterLab release needed. Extensions upgrade when they are ready.</p></div>
+  </div>
+  <p class="lead" data-show="4">The build system now has its own releases.</p>
+  <aside class="notes">
+    <p>A real story from the August report. Rspack 2.0 switched to Module Federation v2, which changed how shared package versions are matched. Extensions depending on older non-singleton packages broke.</p>
+    <p>Before jupyter-builder this needed a JupyterLab release and a long discussion. Now a builder release fixed it within 24 hours of the report.</p>
+    <p>Feedback also came from developers at UC Berkeley, the Space Telescope Science Institute, jupytergis and jupyter-chat.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 17. TEST -->
+<section class="slide" id="test" data-chapter="Test" data-title="UI tests you can trust" data-time="1:00">
+  <div class="pillar-nav"><span>prototype</span><span>lint</span><span>build</span><span class="on c-test">test</span></div>
+  <div class="kicker test"><svg class="i"><use href="#i-camera"/></svg>Test</div>
+  <h2 class="title">UI tests you can trust</h2>
+  <div class="bars mt">
+    <div class="bar-head"><span></span><span class="muted">Before</span><span class="hl-test">Now</span></div>
+    <div class="bar-row" data-show="1"><span class="bl">Full UI test run</span>
+      <span class="bv before"><i style="--w:100%"></i><b>55 min</b></span>
+      <span class="bv now"><i style="--w:27%"></i><b>15 min</b></span></div>
+    <div class="bar-row" data-show="2"><span class="bl">New reference images</span>
+      <span class="bv before"><i style="--w:100%"></i><b>45 min, maintainers only</b></span>
+      <span class="bv now"><i style="--w:3%"></i><b>1 min, anyone</b></span></div>
+    <div class="bar-row" data-show="3"><span class="bl">Flaky tests per run</span>
+      <span class="bv before"><i style="--w:100%"></i><b>17</b></span>
+      <span class="bv now"><i style="--w:14%"></i><b>2.4</b></span></div>
+    <div class="bar-row" data-show="4"><span class="bl">Runs with a hard failure</span>
+      <span class="bv before"><i style="--w:100%"></i><b>54%</b></span>
+      <span class="bv now"><i style="--w:26%"></i><b>14%</b></span></div>
+    <div class="bar-row yesno" data-show="5"><span class="bl">Same pixels on your laptop</span>
+      <span class="bv before"><svg class="i bad"><use href="#i-circle-x"/></svg><b>no</b></span>
+      <span class="bv now"><svg class="i good"><use href="#i-circle-check"/></svg><b>yes, with the CI fonts</b></span></div>
+  </div>
+  <p class="lead bottom" data-show="6"><svg class="i hl-test"><use href="#i-bug"/></svg> Fixing flaky tests found <b>19 real bugs</b> in JupyterLab. All are fixed.</p>
+  <aside class="notes">
+    <p>About 350 screenshots compared on every pull request.</p>
+    <p>Run time 55 to 15 minutes: six shards per browser. New reference images: 45 minutes by a maintainer, now about one minute, requested by anyone with a comment.</p>
+    <p>Flaky tests per scheduled run: 17 in January, 2.4 in August. Runs with a hard failure: 54% to 14%.</p>
+    <p>Same pixels locally: fonts pinned as npm packages, two Chromium flags.</p>
+    <p>Many flaky tests were real bugs that only showed under CI timing: 19 found, all fixed.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 18. TESTS FOR AGENTS -->
+<section class="slide" id="test-agents" data-chapter="Test" data-title="Tests for coding agents" data-time="0:45">
+  <div class="pillar-nav"><span>prototype</span><span>lint</span><span>build</span><span class="on c-test">test</span></div>
+  <div class="kicker test"><svg class="i"><use href="#i-bot"/></svg>Test</div>
+  <h2 class="title">Agents need fast and reliable tests</h2>
+  <div class="rounds mt-l">
+    <div class="round-row"><span class="rl">55 min per run</span><span class="dots d8"></span><b>8</b></div>
+    <div class="round-row now" data-show="1"><span class="rl">15 min per run</span><span class="dots d30"></span><b>30</b></div>
+    <div class="small muted rounds-cap">rounds of change and check in a working day</div>
+  </div>
+  <ul class="ticks stagger-steps">
+    <li data-show="2"><svg class="i good"><use href="#i-circle-check"/></svg>A failure on your laptop is a real failure. No retries hide flaky tests, so agents stop adding fixed waits.</li>
+    <li data-show="3"><svg class="i good"><use href="#i-circle-check"/></svg>The rules are in files that agents read: AGENTS.md, the contributing guide, lint rules.</li>
+    <li data-show="4"><svg class="i good"><use href="#i-circle-check"/></svg>Every new or changed test has a video in the report.</li>
+  </ul>
+  <aside class="notes">
+    <p>28 of 30 recent PRs that changed a UI test were AI-assisted. A developer with an agent needs a test that runs on their machine, a result they can trust, and an answer in minutes.</p>
+    <p>At 55 minutes per run a working day has room for about 8 rounds; at 15 minutes, about 30.</p>
+    <p>Given a false failure, an agent reruns tests or changes code that was not broken, often by adding a fixed wait.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 19. TEST BOT -->
+<section class="slide" id="test-bot" data-chapter="Test" data-title="Anyone can update snapshots" data-time="1:00">
+  <div class="pillar-nav"><span>prototype</span><span>lint</span><span>build</span><span class="on c-test">test</span></div>
+  <div class="kicker test"><svg class="i"><use href="#i-git-pull-request"/></svg>Test</div>
+  <h2 class="title">Anyone can update snapshots</h2>
+  <div class="botgrid mt">
+    <figure class="bot-fig">
+      <img class="shot" src="assets/img/jupyterlab-snapshot-bot-comment.png" alt="A pull request comment asks a bot to update snapshots; the bot opens a pull request">
+      <figcaption>Comment <span class="mono hl-test">please open PR to update snapshots</span>: a bot opens a PR with the new images in about a minute.</figcaption>
+    </figure>
+    <figure class="bot-fig" data-show="1" data-anim="right">
+      <img class="shot" src="assets/img/jupyterlab-ui-test-badge.png" alt="A bot comment with a UI tests badge that reads 4 flaky">
+      <figcaption>The badge opens the Playwright report in the browser. No download, no unzip.</figcaption>
+    </figure>
+  </div>
+  <div class="safe bottom" data-show="2"><svg class="i hl-test"><use href="#i-lock"/></svg><span><b>Safe for pull requests from forks:</b> the bot commits to its own fork, a maintainer approves each run, and zizmor checks the workflow files.</span></div>
+  <aside class="notes">
+    <p>Any contributor can ask for new reference images. The bot takes the screenshots from the failed run, so it takes about a minute after the tests finish.</p>
+    <p>(Click) The badge links to a single-file report served by GitHub. Playwright declined to make the report self-contained, so we wrote an action that does it.</p>
+    <p>(Click) The bot has no write access to the repository: it opens a PR against the contributor's branch.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 20. TAKE IT HOME -->
+<section class="slide" id="take-home" data-chapter="Reusable" data-title="Use it in your project" data-time="0:45">
+  <div class="kicker"><svg class="i"><use href="#i-package-check"/></svg>Reusable beyond Jupyter</div>
+  <h2 class="title">Use it in your project</h2>
+  <div class="grid g3 home stagger vcenter">
+    <div class="card"><div class="hh c-prototype"><svg class="i"><use href="#i-flask-conical"/></svg>Plugin Playground</div><code class="cmd">pip install jupyterlab-plugin-playground</code><p>Or open it in JupyterLite, no install.</p></div>
+    <div class="card"><div class="hh c-lint"><svg class="i"><use href="#i-shield-check"/></svg>@jupyter/eslint-plugin</div><code class="cmd">npm i -D @jupyter/eslint-plugin</code><p>Then add <code>configs.recommended</code>. Run it once on your extension.</p></div>
+    <div class="card"><div class="hh c-build"><svg class="i"><use href="#i-hammer"/></svg>jupyter-builder</div><code class="cmd">pip install jupyter-builder</code><p><code>jupyter-builder build .</code> instead of <code>jupyter labextension build .</code></p></div>
+    <div class="card"><div class="hh c-test"><svg class="i"><use href="#i-file-code"/></svg>inline-playwright-report</div><code class="cmd">jupyterlab/maintainer-tools</code><p>Turns a Playwright report into one HTML file that GitHub can show.</p></div>
+    <div class="card"><div class="hh c-test"><svg class="i"><use href="#i-message-square-text"/></svg>ui-test-report-comment</div><code class="cmd">jupyterlab/maintainer-tools</code><p>Posts the badge comment, with safety checks for forks.</p></div>
+    <div class="card"><div class="hh c-test"><svg class="i"><use href="#i-scan-eye"/></svg>Stable screenshots</div><code class="cmd">--disable-lcd-text</code><p>Pin fonts with <code>@fontsource</code>. Set <code>fullyParallel: true</code> so shards get equal work.</p></div>
+  </div>
+  <aside class="notes">
+    <p>All of this is reusable. The two GitHub actions work in any repository that uses Playwright.</p>
+    <p>For your own screenshot tests: pin the fonts as npm packages, pass --disable-lcd-text to Chromium, set fullyParallel so shards balance, and install chromium with --only-shell.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 21. CHALLENGES -->
+<section class="slide" id="challenges" data-chapter="What next" data-title="Challenges ahead" data-time="1:30">
+  <div class="kicker"><svg class="i"><use href="#i-route"/></svg>Part 3</div>
+  <h2 class="title">New challenges with AI, and our answers</h2>
+  <div class="chal mt">
+    <div class="chal-head"><span>Challenge</span><span></span><span>What we do</span></div>
+    <div class="chal-row" data-show="1"><span class="cq"><svg class="i"><use href="#i-hourglass"/></svg>Code arrives faster than people can review it</span><svg class="i ca"><use href="#i-arrow-right"/></svg><span class="cr">Move feedback from people to tools: lint, badges, snapshot PRs on request</span></div>
+    <div class="chal-row" data-show="2"><span class="cq"><svg class="i"><use href="#i-file-x"/></svg>Agents skip written conventions</span><svg class="i ca"><use href="#i-arrow-right"/></svg><span class="cr">Lint rules whose error message says how to fix it</span></div>
+    <div class="chal-row" data-show="3"><span class="cq"><svg class="i"><use href="#i-dice-5"/></svg>Flaky tests mislead agents</span><svg class="i ca"><use href="#i-arrow-right"/></svg><span class="cr">Tests that give the same result on a laptop; a weekly report of flaky tests</span></div>
+    <div class="chal-row" data-show="4"><span class="cq"><svg class="i"><use href="#i-user-plus"/></svg>More first-time contributors</span><svg class="i ca"><use href="#i-arrow-right"/></svg><span class="cr">Workflows that need no maintainer; an AI usage question in the PR template</span></div>
+    <div class="chal-row" data-show="5"><span class="cq"><svg class="i"><use href="#i-shield-alert"/></svg>Bots that act on forks can be abused</span><svg class="i ca"><use href="#i-arrow-right"/></svg><span class="cr">No write access in jobs that read fork content; maintainer approval; zizmor checks</span></div>
+  </div>
+  <aside class="notes">
+    <p>Five challenges, each with a response that is already in place.</p>
+    <p>Review time is the scarce resource. Every check a tool can make is a review comment a person does not have to write.</p>
+    <p>The PR template asks whether AI generated some of the content; that is where the 28 of 30 number comes from.</p>
+    <p>Open work: 2.4 flaky tests per run remain, 36 fixed waits are still behind disable comments, and the playground's LSP in JupyterLite waits on upstream releases.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 22. REPORT CARD -->
+<section class="slide" id="report" data-chapter="Report" data-title="Report to the Foundation" data-time="1:00">
+  <div class="kicker"><svg class="i"><use href="#i-landmark"/></svg>Report to the Jupyter Foundation</div>
+  <h2 class="title">Four proposals, delivered</h2>
+  <div class="report mt stagger">
+    <div class="rep-row c-test"><div class="icon-badge s"><svg class="i"><use href="#i-camera"/></svg></div><div class="rep-name">Improve visual regression testing<span class="rep-id">#7</span></div><div class="rep-what">55 to 15 min; snapshots on request; local runs match CI</div><div class="rep-ok"><svg class="i"><use href="#i-circle-check"/></svg>complete</div></div>
+    <div class="rep-row c-prototype"><div class="icon-badge s"><svg class="i"><use href="#i-flask-conical"/></svg></div><div class="rep-name">Plugin Playground<span class="rep-id">#8</span></div><div class="rep-what">1.0 with AI; JupyterLite and Binder; share and export</div><div class="rep-ok"><svg class="i"><use href="#i-circle-check"/></svg>complete</div></div>
+    <div class="rep-row c-build"><div class="icon-badge s"><svg class="i"><use href="#i-hammer"/></svg></div><div class="rep-name">Finish the build system separation<span class="rep-id">#9</span></div><div class="rep-what">jupyter-builder 1.0 to 1.2; Rspack; no JupyterLab needed</div><div class="rep-ok"><svg class="i"><use href="#i-circle-check"/></svg>complete</div></div>
+    <div class="rep-row c-lint"><div class="icon-badge s"><svg class="i"><use href="#i-shield-check"/></svg></div><div class="rep-name">Custom linting<span class="rep-id">#11</span></div><div class="rep-what">23 rules; in the extension template; stricter JupyterLab CI</div><div class="rep-ok"><svg class="i"><use href="#i-circle-check"/></svg>complete</div></div>
+  </div>
+  <div class="delivered bottom"><span>Delivered by</span><img class="logo on-dark lg-ot-xs" src="assets/img/logos/openteams-white.svg" alt="OpenTeams"><img class="logo on-light lg-ot-xs" src="assets/img/logos/openteams.svg" alt="OpenTeams"><img class="logo on-dark lg-qs-xs" src="assets/img/logos/quansight-white.svg" alt="Quansight"><img class="logo on-light lg-qs-xs" src="assets/img/logos/quansight.svg" alt="Quansight"><span class="spacer"></span><span class="muted small">Reports: <span class="mono">jupyter-governance.github.io/funding-proposals</span></span></div>
+  <aside class="notes">
+    <p>This is the report. All four are complete; the funding site still lists the builder and linting proposals as in progress until their final reports land.</p>
+    <p>Stretch goal left: LSP in the JupyterLite playground, waiting on upstream releases.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ 23. THANK YOU -->
+<section class="slide" id="thanks" data-hud-url="off" data-chapter="Thank you" data-title="Thank you" data-time="0:30">
+  <div class="thanks-wrap">
+    <div class="thanks-left">
+      <h2 class="title xl">Thank you</h2>
+      <p class="lead">Questions?</p>
+      <div class="repo-url"><svg class="i"><use href="#i-link"/></svg><span><small>Slides, sources and every link</small>github.com/krassowski/mini-summit</span></div>
+      <div class="logo-row">
+        <div class="logo-plate sm"><img class="lg-jf" src="assets/img/logos/jupyter-foundation.svg" alt="Jupyter Foundation"></div>
+        <div class="logo-plate sm"><img class="lg-ot" src="assets/img/logos/openteams.svg" alt="OpenTeams"></div>
+        <div class="logo-plate sm"><img class="lg-qs" src="assets/img/logos/quansight.svg" alt="Quansight"></div>
+      </div>
+    </div>
+    <div class="crew">
+      <div class="pl">Built by · OpenTeams</div>
+      <div class="crew-row"><div class="mate"><img class="av" src="assets/img/avatars/MUFFANUJ.webp" alt=""><b>Anuj Singh</b><span>@MUFFANUJ</span><em>Plugin Playground</em></div><div class="mate"><img class="av" src="assets/img/avatars/Darshan808.webp" alt=""><b>Darshan Paudyal</b><span>@Darshan808</span><em>lint, build</em></div><div class="mate"><img class="av" src="assets/img/avatars/krassowski.webp" alt=""><b>Mike Krassowski</b><span>@krassowski</span><em>UI tests, guidance</em></div></div>
+      <div class="pl">Advice and support · Quansight</div>
+      <div class="crew-row"><div class="mate"><img class="av" src="assets/img/avatars/smeragoel.webp" alt=""><b>Smera Goel</b><span>@smeragoel</span><em>design</em></div><div class="mate"><img class="av" src="assets/img/avatars/Carreau.webp" alt=""><b>Matthias Bussonnier</b><span>@Carreau</span><em>UI test reviews</em></div><div class="mate"><img class="av" src="assets/img/avatars/trallard.webp" alt=""><b>Tania Allard</b><span>@trallard</span><em>proposal setup</em></div></div>
+      <div class="pl">Reviews and feedback</div>
+      <p>Jeremy Tuloup, Nicolas Brichet, Nicholas Bollweg, Jason Grout, Yann Pellegrini, Florence Haudin, Matt Fisher, Frédéric Collonval</p>
+      <div class="pl">And</div>
+      <p>95 contributors to JupyterLab 4.6, the weekly triage group, and everyone who tried the pre-releases</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Thank the people by name, and the Foundation once more.</p>
+    <p>Darshan could not be here; the lint and build work is his.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ FURTHER READING -->
+<section class="slide" id="reading" data-hud-url="off" data-chapter="Further reading" data-title="Further reading" data-time="0:15">
+  <div class="kicker"><svg class="i"><use href="#i-book-open"/></svg>Further reading</div>
+  <h2 class="title s">The posts behind this talk</h2>
+  <div class="reading mt stagger">
+    <article class="post c-orange">
+      <img class="top" src="assets/img/reading/jupyterlab-4-6-and-notebook-7-6-are-out.webp" alt="">
+      <div class="pb"><div class="src"><i></i>Jupyter blog · release</div><h4>JupyterLab 4.6 and Notebook 7.6 are out!</h4><div class="meta">Michał Krassowski · 2 July 2026</div></div>
+    </article>
+    <article class="post c-prototype">
+      <img class="top" src="assets/img/reading/a-users-journey-with-plugin-playground-from-first-idea.webp" alt="">
+      <div class="pb"><div class="src"><i></i>Jupyter blog · prototype</div><h4>A User’s Journey with Plugin Playground: From First Idea to Installable JupyterLab Extension</h4><div class="meta">Anuj Singh · 28 May 2026</div></div>
+    </article>
+    <article class="post c-prototype">
+      <img class="art" style="background:#d6e4fa" src="assets/img/reading/ot-plugin-playground-ai-integration.svg" alt="">
+      <div class="pb"><div class="src"><i></i>OpenTeams · prototype</div><h4>Plugin Playground AI Integration for Faster Plugin Prototyping</h4><div class="meta">Anuj Singh · 24 April 2026</div></div>
+    </article>
+    <article class="post c-lint">
+      <img src="assets/img/reading/catching-jupyter-specific-bugs-before-ci-does.webp" alt="">
+      <div class="pb"><div class="src"><i></i>Jupyter blog · lint</div><h4>Catching Jupyter-specific bugs before CI does: announcing jupyter eslint plugin</h4><div class="meta">Darshan Paudyal · 11 June 2026</div></div>
+    </article>
+    <article class="post c-lint">
+      <img class="art" style="background:#041437" src="assets/img/reading/ot-lint-rules-for-ai-agents.svg" alt="">
+      <div class="pb"><div class="src"><i></i>OpenTeams · lint</div><h4>Your AI Agent Ignored AGENTS.md. Your Linter Won’t Let It.</h4><div class="meta">Darshan Paudyal · 1 October 2026</div></div>
+    </article>
+    <article class="post c-build">
+      <img src="assets/img/reading/announcing-jupyter-builder-a-standalone-build-system.webp" alt="">
+      <div class="pb"><div class="src"><i></i>Jupyter blog · build</div><h4>Announcing jupyter-builder: A Standalone Build System for JupyterLab Extensions</h4><div class="meta">Darshan Paudyal · 19 June 2026</div></div>
+    </article>
+    <article class="post c-test">
+      <img class="top" src="assets/img/reading/ot-visual-regression-testing-jupyterlab.webp" alt="">
+      <div class="pb"><div class="src"><i></i>OpenTeams · test</div><h4>Reliable Visual Regression Testing for Humans and Coding Agents</h4><div class="meta">Mike Krassowski · October 2026</div></div>
+    </article>
+    <article class="post links-tile">
+      <div class="lt-body">
+        <svg class="i"><use href="#i-link"/></svg>
+        <div class="lt-lbl">Every link, the slides and their sources</div>
+        <div class="lt-url">github.com/<br>krassowski/<br>mini-summit</div>
+      </div>
+    </article>
+  </div>
+  <aside class="notes">
+    <p>Leave this slide up during questions: it lists every post, and the repository has all the links.</p>
+    <p>The UI test post (openteams-ai/engineering-blog#87) is shown as published; check its address before the talk.</p>
+  </aside>
+</section>
+
+<!-- ================================================================ APPENDIX -->
+<section class="slide" id="appx-ai" data-chapter="Appendix" data-title="Appendix: AI usage by month">
+  <div class="kicker subtle-k">Appendix</div>
+  <h2 class="title s">AI usage in JupyterLab pull requests</h2>
+  <div class="appx-ai mt">
+    <table class="tbl">
+      <thead><tr><th>Month opened (2026)</th><th class="r">Said yes</th><th class="r">Answered</th><th class="r">Share</th></tr></thead>
+      <tbody>
+      <tr><td>February (from the 13th)</td><td class="r">10</td><td class="r">26</td><td class="r">38%</td></tr>
+      <tr><td>March</td><td class="r">19</td><td class="r">42</td><td class="r">45%</td></tr>
+      <tr><td>April</td><td class="r">21</td><td class="r">36</td><td class="r">58%</td></tr>
+      <tr><td>May</td><td class="r">29</td><td class="r">52</td><td class="r">56%</td></tr>
+      <tr><td>June</td><td class="r">33</td><td class="r">46</td><td class="r">72%</td></tr>
+      <tr><td>July</td><td class="r">33</td><td class="r">38</td><td class="r">87%</td></tr>
+      <tr><td>August</td><td class="r">18</td><td class="r">21</td><td class="r">86%</td></tr>
+      <tr><td>September</td><td class="r">11</td><td class="r">13</td><td class="r">85%</td></tr>
+      </tbody>
+    </table>
+    <div class="appx-ai-side">
+      <table class="tbl">
+        <thead><tr><th>Release</th><th class="r">Said yes</th><th class="r">Answered</th><th class="r">Share</th></tr></thead>
+        <tbody>
+          <tr><td>4.6.0</td><td class="r">87</td><td class="r">168</td><td class="r">52%</td></tr>
+          <tr><td>After 4.6.0</td><td class="r">87</td><td class="r">106</td><td class="r">82%</td></tr>
+        </tbody>
+      </table>
+      <p class="small muted mt">The question “Some or all of the content of this PR was generated by AI” is in the PR template since 13 February 2026. PRs by bots, and PRs that did not answer, are not counted. Script: <span class="mono">tools/ai_usage.py</span>.</p>
+    </div>
+  </div>
+  <aside class="notes"><p>Only if asked. The table behind the chart on the "Writing code got cheap" slide.</p></aside>
+</section>
+
+<section class="slide" id="appx-rules" data-chapter="Appendix" data-title="Appendix: the 23 rules">
+  <div class="kicker subtle-k">Appendix</div>
+  <h2 class="title s">The 23 rules of @jupyter/eslint-plugin 1.3</h2>
+  <div class="rules-all mt">
+    <div><h4>Plugins</h4><code>plugin-activation-args</code><code>plugin-description</code><code>plugin-id-convention</code><code>token-format</code></div>
+    <div><h4>Commands and settings</h4><code>command-described-by</code><code>no-schema-enum</code></div>
+    <div><h4>Translations</h4><code>no-untranslated-string</code><code>no-translation-concatenation</code><code>no-dynamic-translation</code><code>incorrect-translator-usage</code></div>
+    <div><h4>Memory leaks</h4><code>require-signal-cleanup</code><code>require-signal-this-arg</code><code>prefer-signal-this-arg</code><code>require-disposable-ownership</code><code>require-disposable-transfer</code></div>
+    <div><h4>UI tests</h4><code>galata-prefer-notebook-cell-helper</code><code>galata-prefer-filebrowser-helper</code><code>galata-prefer-menu-helper</code><code>galata-prefer-context-menu-helper</code><code>galata-prefer-sidebar-activity-helper</code><code>require-soft-assertions-before-snapshots</code></div>
+    <div><h4>Startup and deployment</h4><code>prefer-lazy-imports</code><code>no-pageconfig-base-url</code></div>
+  </div>
+  <aside class="notes"><p>Only if asked.</p></aside>
+</section>
+
+<section class="slide" id="appx-pixels" data-chapter="Appendix" data-title="Appendix: screenshots on other systems">
+  <div class="kicker subtle-k">Appendix</div>
+  <h2 class="title s">Screenshots on other systems</h2>
+  <table class="tbl mt">
+    <thead><tr><th></th><th class="r">Before</th><th class="r">Now</th></tr></thead>
+    <tbody>
+      <tr><td>Fedora 44, default fonts: screenshots that match CI</td><td class="r">1%</td><td class="r">85%</td></tr>
+      <tr><td>Fedora 44, default fonts: tests that pass</td><td class="r">56%</td><td class="r">93%</td></tr>
+      <tr><td>Ubuntu 26.04 runner: screenshots that match CI</td><td class="r">35%</td><td class="r">100%</td></tr>
+      <tr><td>Ubuntu 26.04 runner: tests that pass</td><td class="r">71%</td><td class="r">99.8%</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted mt">Measured on GitHub Actions on 26 September 2026. With the CI font packages installed, Fedora 44 and openSUSE Tumbleweed match all 255 comparisons. The remaining Fedora differences are Mermaid diagrams, which draw text with system fonts.</p>
+  <aside class="notes"><p>Only if asked.</p></aside>
+</section>
+
+<div class="hud"><div class="hud-progress"><i></i></div><div class="hud-chapter"></div><div class="hud-url">github.com/krassowski/mini-summit</div><div class="hud-page"></div></div>
+</div>
+</div>
+
+<div class="blackout-layer"></div>
+<div class="whiteout-layer"></div>
+<div class="laser-dot"></div>
+<div class="help" role="dialog" aria-label="Keyboard shortcuts">
+  <div class="help-box">
+    <h3>Keys</h3>
+    <dl>
+      <dt>→ Space PgDn</dt><dd>next step</dd>
+      <dt>← PgUp</dt><dd>previous step</dd>
+      <dt>Home End</dt><dd>first or last slide</dd>
+      <dt>12 Enter</dt><dd>go to slide 12</dd>
+      <dt>O</dt><dd>overview</dd>
+      <dt>S</dt><dd>presenter window with notes and timer</dd>
+      <dt>F</dt><dd>full screen</dd>
+      <dt>B or .</dt><dd>black screen</dd>
+      <dt>W</dt><dd>white screen</dd>
+      <dt>T</dt><dd>light or dark theme</dd>
+      <dt>L</dt><dd>laser pointer</dd>
+      <dt>?</dt><dd>this help</dd>
+    </dl>
+  </div>
+</div>
+
+<script src="assets/deck.js"></script>
+<script src="assets/tour.js"></script>
+</body>
+</html>

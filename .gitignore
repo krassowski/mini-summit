@@ -1,0 +1,5 @@
+# Screenshots and frames rendered by slides/render.mjs, regenerated on demand
+slides/out/
+
+# Cache of pull request descriptions written by tools/ai_usage.py
+sources/release-stats/raw-*.json
