@@ -790,3 +790,14 @@ kbd {
 .mate span { font: 500 19px var(--mono); color: var(--muted); }
 .crew p { font-size: 25px; line-height: 1.38; color: var(--fg); }
 .mate em { font: 400 19px var(--sans); font-style: normal; color: var(--subtle); line-height: 1.2; }
+
+/* further reading, grouped by blog */
+.reading-groups { display: flex; flex-direction: column; gap: 12px; }
+.reading-groups .reading + .rgl { margin-top: 14px; }
+.rgl { display: flex; align-items: center; gap: 14px; font: 600 21px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.rgl-mark { width: 24px; height: 31px; color: var(--muted); }
+.rgl .logo.rgl-ot { height: 34px; width: auto; margin-left: -4px; }
+#reading .post img { height: 118px; }
+#reading .post .pb { padding: 12px 18px 14px; gap: 6px; }
+#reading .post h4 { font-size: 23px; }
+#reading .post .meta { font-size: 18px; }
