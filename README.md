@@ -58,8 +58,9 @@ On the OpenTeams engineering blog:
 The **Jupyter Foundation** funded the four proposals. **OpenTeams** and **Quansight** delivered them together, and OpenTeams paid for the travel to the summit. The **community** reviewed, triaged, tested and adopted the work.
 
 - Built by [Anuj Singh](https://github.com/MUFFANUJ), [Darshan Paudyal](https://github.com/Darshan808) and [Mike Krassowski](https://github.com/krassowski) (OpenTeams).
-- Advice and support from Quansight: [Smera Goel](https://github.com/smeragoel) (design), [Matthias Bussonnier](https://github.com/Carreau) (UI test reviews) and [Tania Allard](https://github.com/trallard) (setting up the proposals).
-- Reviews and advice from [Jeremy Tuloup](https://github.com/jtpio), [Nicolas Brichet](https://github.com/brichet), [Nicholas Bollweg](https://github.com/bollwyvl), [Jason Grout](https://github.com/jasongrout), [Yann Pellegrini](https://github.com/Yann-P), [Florence Haudin](https://github.com/HaudinFlorence), [Matt Fisher](https://github.com/mfisher87) and [Frédéric Collonval](https://github.com/fcollonval).
+- Advice and support from Quansight: [Smera Goel](https://github.com/smeragoel), [Matthias Bussonnier](https://github.com/Carreau) and [Tania Allard](https://github.com/trallard).
+- Administrative support from Erika Oliphant (OpenTeams) and Ashley Baal (Quansight).
+- Reviews and feedback from [Jeremy Tuloup](https://github.com/jtpio), [Nicolas Brichet](https://github.com/brichet), [Nicholas Bollweg](https://github.com/bollwyvl), [Jason Grout](https://github.com/jasongrout), [Yann Pellegrini](https://github.com/Yann-P), [Florence Haudin](https://github.com/HaudinFlorence), [Matt Fisher](https://github.com/mfisher87) and [Frédéric Collonval](https://github.com/fcollonval).
 - jupyter-builder was started in Google Summer of Code 2024 by [Ronan Coutinho](https://github.com/cronan03), mentored by Frédéric Collonval.
 - The weekly triage group, including [@RRosio](https://github.com/RRosio), [Andrii Ieroshenko](https://github.com/andrii-i), [Rodrigo Silva Ferreira](https://github.com/rodrigosf672) and [Konstantin Taletskiy](https://github.com/ktaletsk), and the [95 contributors to JupyterLab 4.6](https://github.com/jupyterlab/jupyterlab/releases/tag/v4.6.0).
 

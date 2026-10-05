@@ -39,3 +39,9 @@ Padding: `jupyter-foundation.svg` and `quansight.svg` are cropped to the artwork
   - Source: https://openteams.com/wp-content/uploads/2024/11/OT-logo-with-%C2%AE-1.svg (media item 28895, dated 2026-06-08; the same URL is in the saved pages `sources/raw/openteams.com__*.html`).
   - Fetched: 2026-10-05.
 - Guidelines: https://openteams.com/press/ has an "OpenTeams logos, Download Zip File" button. No written brand guideline or licence statement was found.
+
+## Jupyter wordmark (row label on the "Further reading" slide)
+
+- `jupyter.svg`: the header logo of blog.jupyter.org for the light theme, https://blog.jupyter.org/theme/img/logo.svg (fetched 2026-10-05, unchanged).
+- `jupyter-white.svg`: the header logo of blog.jupyter.org for the dark theme, https://blog.jupyter.org/theme/img/logo-dark.svg (fetched 2026-10-05, unchanged).
+- "Jupyter" is a trademark of LF Charities: https://lf-charities.org/trademark-policy/
