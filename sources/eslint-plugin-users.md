@@ -1,0 +1,63 @@
+# Repositories that use @jupyter/eslint-plugin
+
+GitHub code search on 2026-10-05 for `"@jupyter/eslint-plugin"` in files named `package.json` (default branches only): 57 repositories, none of them forks, not counting the plugin's own repository. Code search does not index every repository (for example jupyterlab-lsp is missing), so this is a lower bound; a few hits may be copies of other repositories.
+
+Re-run: `gh search code '"@jupyter/eslint-plugin"' --filename package.json --limit 300 --json repository,path`
+
+- [0nebody/idle-redirector](https://github.com/0nebody/idle-redirector): `package.json`
+- [2i2c-org/jupyterlite-html-exporter](https://github.com/2i2c-org/jupyterlite-html-exporter): `package.json`
+- [aaravind100/jupyterlab](https://github.com/aaravind100/jupyterlab): `package.json`
+- [afshin/llvm-explorer](https://github.com/afshin/llvm-explorer): `package.json`
+- [agoose77/gennaker-tools](https://github.com/agoose77/gennaker-tools): `package.json`
+- [agriyakhetarpal/jupyterlite-pdf-exporter](https://github.com/agriyakhetarpal/jupyterlite-pdf-exporter): `package.json`
+- [albertmichaelj/jupyterlab-litellm-budget](https://github.com/albertmichaelj/jupyterlab-litellm-budget): `package.json`
+- [almond-sh/almond-scalafmt](https://github.com/almond-sh/almond-scalafmt): `package.json`
+- [ASFOpenSARlab/nbgitpuller-jl-interface](https://github.com/ASFOpenSARlab/nbgitpuller-jl-interface): `package.json`
+- [ASFOpenSARlab/opensciencelab-tours](https://github.com/ASFOpenSARlab/opensciencelab-tours): `package.json`
+- [brianysoong/monokai-pro-jupyterlab](https://github.com/brianysoong/monokai-pro-jupyterlab): `jupyterlab_monokai_pro_ce/labextension/package.json`, `jupyterlab_monokai_pro_ce/labextension/schemas/jupyterlab-monokai-pro-ce/package.json.orig`, `package.json`
+- [d-torrance/jupyterlab-macaulay2](https://github.com/d-torrance/jupyterlab-macaulay2): `package.json`
+- [deshaw/jupyterlab-execute-time](https://github.com/deshaw/jupyterlab-execute-time): `package.json`
+- [deshaw/jupyterlab-limit-output](https://github.com/deshaw/jupyterlab-limit-output): `package.json`
+- [deshaw/jupyterlab-notify](https://github.com/deshaw/jupyterlab-notify): `package.json`
+- [deshaw/jupyterlab-pyflyby](https://github.com/deshaw/jupyterlab-pyflyby): `package.json`
+- [deshaw/jupyterlab-skip-traceback](https://github.com/deshaw/jupyterlab-skip-traceback): `package.json`
+- [erawn/nod](https://github.com/erawn/nod): `package.json`
+- [hic-infra/k8tre-egress-jupyter](https://github.com/hic-infra/k8tre-egress-jupyter): `package.json`
+- [ipython/ipyparallel](https://github.com/ipython/ipyparallel): `package.json`
+- [ITC-CRIB/jupyter-fairly](https://github.com/ITC-CRIB/jupyter-fairly): `jupyter_fairly/package.json`
+- [itimermans/sandor](https://github.com/itimermans/sandor): `package.json`
+- [joseph-long/jupyterlab_ext_pathbar](https://github.com/joseph-long/jupyterlab_ext_pathbar): `package.json`
+- [jtpio/jupyterlab-pierre-theme](https://github.com/jtpio/jupyterlab-pierre-theme): `package.json`
+- [jtpio/jupyterlab-unsafe-globals](https://github.com/jtpio/jupyterlab-unsafe-globals): `package.json`
+- [jtpio/p5-notebook](https://github.com/jtpio/p5-notebook): `package.json`
+- [jupyter-ai-contrib/jupyter-live-content](https://github.com/jupyter-ai-contrib/jupyter-live-content): `package.json`
+- [jupyter-ai-contrib/jupyterlab-commands-toolkit](https://github.com/jupyter-ai-contrib/jupyterlab-commands-toolkit): `package.json`
+- [jupyter/notebook](https://github.com/jupyter/notebook): `package.json`
+- [jupyterlab-contrib/jupyter-archive](https://github.com/jupyterlab-contrib/jupyter-archive): `package.json`
+- [jupyterlab/extension-template](https://github.com/jupyterlab/extension-template): `template/package.json.jinja`
+- [jupyterlab/jupyter-chat](https://github.com/jupyterlab/jupyter-chat): `package.json`
+- [jupyterlab/jupyter-collaboration](https://github.com/jupyterlab/jupyter-collaboration): `package.json`
+- [jupyterlab/jupyterlab](https://github.com/jupyterlab/jupyterlab): `package.json`
+- [jupyterlab/jupyterlab-git](https://github.com/jupyterlab/jupyterlab-git): `package.json`
+- [jupyterlab/plugin-playground](https://github.com/jupyterlab/plugin-playground): `package.json`
+- [jupyterlite/ai](https://github.com/jupyterlite/ai): `package.json`
+- [jupyterlite/jupyterlite](https://github.com/jupyterlite/jupyterlite): `package.json`
+- [LightconeResearch/jupyterlab-lightcone](https://github.com/LightconeResearch/jupyterlab-lightcone): `package.json`
+- [lsst-sqre/rsp-jupyter-extensions](https://github.com/lsst-sqre/rsp-jupyter-extensions): `package.json`
+- [naoh16/jupyterlab-wav-ex](https://github.com/naoh16/jupyterlab-wav-ex): `package.json`
+- [nasa-fornax/fornax-labextension](https://github.com/nasa-fornax/fornax-labextension): `package.json`
+- [ninerealmlabs/jupyterlab-theme-material-night-eighties](https://github.com/ninerealmlabs/jupyterlab-theme-material-night-eighties): `package.json`
+- [openteams-ai/whybook](https://github.com/openteams-ai/whybook): `package.json`
+- [QuantStack/jupyter-ai-tutor](https://github.com/QuantStack/jupyter-ai-tutor): `package.json`
+- [Silviu812/Reproducible-Research-Pipeline-for-JupyterLab](https://github.com/Silviu812/Reproducible-Research-Pipeline-for-JupyterLab): `package.json`
+- [spacetelescope/motorcycle](https://github.com/spacetelescope/motorcycle): `package.json`
+- [stellarshenson/jupyterlab_export_markdown_extension](https://github.com/stellarshenson/jupyterlab_export_markdown_extension): `package.json`
+- [stellarshenson/jupyterlab_github_markdown_alerts_extension](https://github.com/stellarshenson/jupyterlab_github_markdown_alerts_extension): `package.json`
+- [stellarshenson/jupyterlab_jump_to_definition_fix](https://github.com/stellarshenson/jupyterlab_jump_to_definition_fix): `package.json`
+- [stellarshenson/jupyterlab_markdown_switch_tab_scrolling_fix](https://github.com/stellarshenson/jupyterlab_markdown_switch_tab_scrolling_fix): `package.json`
+- [stellarshenson/jupyterlab_refresh_view_extension](https://github.com/stellarshenson/jupyterlab_refresh_view_extension): `package.json`
+- [stellarshenson/nb_venv_kernels](https://github.com/stellarshenson/nb_venv_kernels): `package.json`
+- [telamonian/jupyter-dag](https://github.com/telamonian/jupyter-dag): `package.json`
+- [vre-hub/inveniordm-jupyterlab-extension](https://github.com/vre-hub/inveniordm-jupyterlab-extension): `package.json`
+- [wangyusheng1985/jupyter-plugin-aiterminal](https://github.com/wangyusheng1985/jupyter-plugin-aiterminal): `package.json`
+- [yourtan/NeptuneAtelier](https://github.com/yourtan/NeptuneAtelier): `package.json`
