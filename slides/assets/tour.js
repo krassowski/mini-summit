@@ -21,9 +21,8 @@
   var BUBBLES = {
     welcome: {
       title: 'Welcome to JupyterLab 4.6',
-      body: 'A short tour of new features. Most of them are also in Notebook 7.6 and JupyterLite 0.8.',
-      next: 'Start the tour',
-      skip: true
+      body: 'A short tour of new features, starting with UI customization.',
+      next: 'Start the tour'
     },
     activity: {
       title: 'Put the activity bar on any side',
@@ -180,7 +179,7 @@
     el.querySelector('.tb-body').innerHTML = b.body;
     el.querySelector('.tb-next').textContent = b.next || 'Next';
     el.querySelector('.tb-skip').style.display = b.skip ? '' : 'none';
-    el.querySelector('.tb-back').style.display = k > 1 && !b.skip ? '' : 'none';
+    el.querySelector('.tb-back').style.display = k > 1 ? '' : 'none';
     el.querySelector('.tb-count').textContent = k > 1 ? (k - 1) + ' of ' + (STEPS.length - 3) : '';
     return el;
   }

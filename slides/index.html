@@ -691,11 +691,11 @@
   <div class="proto mt">
     <ol class="steps stagger">
       <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-wand-sparkles"/></svg></span><span><b>Describe it</b> to the AI, or start from a file</span></li>
-      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-puzzle"/></svg></span><span><b>Insert</b> tokens and commands from the sidebar</span></li>
+      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-puzzle"/></svg></span><span><b>Insert</b> tokens and commands</span></li>
       <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-play"/></svg></span><span><b>Load</b> the file as an extension, no build</span></li>
       <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-refresh-cw"/></svg></span><span><b>Run on save</b> while you iterate</span></li>
       <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-link"/></svg></span><span><b>Share</b> a link for review</span></li>
-      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-package"/></svg></span><span><b>Export</b> a wheel or a zip for a real repository</span></li>
+      <li><span class="icon-badge s c-prototype"><svg class="i"><use href="#i-package"/></svg></span><span><b>Export</b> a wheel or a zip</span></li>
     </ol>
     <figure class="proto-shot">
       <img class="shot" src="assets/img/ai-conversation-plugin-running.png" alt="Plugin Playground: an AI chat writes a snippets plugin, which runs in the same JupyterLite window">
@@ -712,10 +712,10 @@
 </section>
 
 <!-- ================================================================ 11. PROTOTYPE AI -->
-<section class="slide" id="prototype-ai" data-chapter="Prototype" data-title="AI inside the playground" data-time="0:45">
+<section class="slide" id="prototype-ai" data-chapter="Prototype" data-title="How the AI integration is built" data-time="0:45">
   <div class="pillar-nav"><span class="on c-prototype">prototype</span><span>lint</span><span>build</span><span>test</span></div>
   <div class="kicker prototype"><svg class="i"><use href="#i-sparkles"/></svg>Prototype</div>
-  <h2 class="title">How AI helps in the playground</h2>
+  <h2 class="title">How the AI integration is built</h2>
   <div class="grid g3 mt-l stagger">
     <div class="card"><div class="icon-badge c-prototype"><svg class="i"><use href="#i-server-off"/></svg></div><h3>No server needed</h3><p>Built on <code>jupyterlite/ai</code>, so it works in JupyterLite and on Binder too.</p></div>
     <div class="card"><div class="icon-badge c-prototype"><svg class="i"><use href="#i-scroll-text"/></svg></div><h3>A guide for writing plugins</h3><p>The AI follows written instructions, so first drafts have the structure that the playground expects.</p></div>
@@ -754,7 +754,7 @@
       <div class="rg"><svg class="i"><use href="#i-settings-2"/></svg><b>Commands and settings</b><span class="n">2</span><code>no-schema-enum</code></div>
     </div>
   </div>
-  <div class="credit bottom"><span class="cr-text">Led by <span class="person"><img class="av" src="assets/img/avatars/Darshan808.webp" alt=""><b>Darshan Paudyal</b></span> (OpenTeams).</span><span class="mono">npm i -D @jupyter/eslint-plugin</span></div>
+  <div class="credit bottom"><span class="cr-text">Led by <span class="person"><img class="av" src="assets/img/avatars/Darshan808.webp" alt=""><b>Darshan Paudyal</b></span> (OpenTeams).</span><span class="mono">jlpm add -D @jupyter/eslint-plugin</span></div>
   <aside class="notes">
     <p>Darshan led this one. The rules catch what TypeScript cannot: conventions one level above the type system.</p>
     <p>Example: a plugin whose activate arguments are in the wrong order. Both are tokens, both type-check, the plugin fails at activation.</p>
@@ -800,16 +800,16 @@
   <div class="pillar-nav"><span>prototype</span><span class="on c-lint">lint</span><span>build</span><span>test</span></div>
   <div class="kicker lint"><svg class="i"><use href="#i-list-checks"/></svg>Lint · reusable</div>
   <h2 class="title">When should you write a custom lint rule?</h2>
-  <div class="recipe vcenter">
+  <div class="recipe">
     <ol class="criteria stagger">
       <li><span class="n">1</span>TypeScript cannot check the convention</li>
-      <li><span class="n">2</span>It is rare in public code, so models have not learned it</li>
-      <li><span class="n">3</span>Breaking it causes no error</li>
-      <li><span class="n">4</span>The error message can say what to do instead</li>
+      <li><span class="n">2</span>Niche framework, private codebase: not in training data</li>
+      <li><span class="n">3</span>Breaking it causes no error, or a late one</li>
+      <li><span class="n">4</span>A correct alternative can be suggested in the error message</li>
     </ol>
     <div class="recipe-side">
       <p class="lead tight" data-show="1">Wrote the same review comment three times? <b>That comment is your rule.</b></p>
-      <div class="term mt" data-show="2"><div class="bar"><i></i><i></i><i></i><span>AGENTS.md</span></div><pre><span class="k">## Before you finish</span>
+      <div class="term" data-show="2"><div class="bar"><i></i><i></i><i></i><span>AGENTS.md</span></div><pre><span class="k">## Before you finish</span>
 - Run <span class="s">`jlpm eslint`</span> and fix every
   <span class="s">`jupyter/*`</span> error.</pre></div>
     </div>
@@ -894,7 +894,7 @@
     <div class="bar-row" data-show="4"><span class="bl">Runs with a hard failure</span>
       <span class="bv before"><i style="--w:100%"></i><b>54%</b></span>
       <span class="bv now"><i style="--w:26%"></i><b>14%</b></span></div>
-    <div class="bar-row yesno" data-show="5"><span class="bl">Same pixels on your laptop</span>
+    <div class="bar-row yesno" data-show="5"><span class="bl">Same pixels on your Linux laptop</span>
       <span class="bv before"><svg class="i bad"><use href="#i-circle-x"/></svg><b>no</b></span>
       <span class="bv now"><svg class="i good"><use href="#i-circle-check"/></svg><b>yes, with the CI fonts</b></span></div>
   </div>
@@ -959,7 +959,7 @@
   <h2 class="title">Use it in your project</h2>
   <div class="grid g3 home stagger vcenter">
     <div class="card"><div class="hh c-prototype"><svg class="i"><use href="#i-flask-conical"/></svg>Plugin Playground</div><code class="cmd">pip install jupyterlab-plugin-playground</code><p>Or open it in JupyterLite, no install.</p></div>
-    <div class="card"><div class="hh c-lint"><svg class="i"><use href="#i-shield-check"/></svg>@jupyter/eslint-plugin</div><code class="cmd">npm i -D @jupyter/eslint-plugin</code><p>Then add <code>configs.recommended</code>. Run it once on your extension.</p></div>
+    <div class="card"><div class="hh c-lint"><svg class="i"><use href="#i-shield-check"/></svg>@jupyter/eslint-plugin</div><code class="cmd">jlpm add -D @jupyter/eslint-plugin</code><p>Then add <code>configs.recommended</code>. Run it once on your extension.</p></div>
     <div class="card"><div class="hh c-build"><svg class="i"><use href="#i-hammer"/></svg>jupyter-builder</div><code class="cmd">pip install jupyter-builder</code><p><code>jupyter-builder build .</code> instead of <code>jupyter labextension build .</code></p></div>
     <div class="card"><div class="hh c-test"><svg class="i"><use href="#i-file-code"/></svg>inline-playwright-report</div><code class="cmd">jupyterlab/maintainer-tools</code><p>Turns a Playwright report into one HTML file that GitHub can show.</p></div>
     <div class="card"><div class="hh c-test"><svg class="i"><use href="#i-message-square-text"/></svg>ui-test-report-comment</div><code class="cmd">jupyterlab/maintainer-tools</code><p>Posts the badge comment, with safety checks for forks.</p></div>
@@ -1043,7 +1043,7 @@
 <!-- ================================================================ FURTHER READING -->
 <section class="slide" id="reading" data-hud-url="off" data-chapter="Further reading" data-title="Further reading" data-time="0:15">
   <div class="kicker"><svg class="i"><use href="#i-book-open"/></svg>Further reading</div>
-  <h2 class="title s">The posts behind this talk</h2>
+  <h2 class="title s">Read more about the release and the tools</h2>
   <div class="reading-groups mt">
     <div class="rgl"><img class="logo on-dark rgl-jp" src="assets/img/logos/jupyter-white.svg" alt="Jupyter"><img class="logo on-light rgl-jp" src="assets/img/logos/jupyter.svg" alt="Jupyter"><span>Blog</span></div>
     <div class="reading stagger">

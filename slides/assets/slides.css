@@ -145,7 +145,7 @@ kbd {
 .tour-bubble.on { opacity: 1; transform: none; }
 .tb-title { font-size: 36px; line-height: 1.15; font-weight: 700; color: #111; letter-spacing: -0.015em; margin-bottom: 12px; }
 .tb-body b { color: #111; font-weight: 600; }
-.tb-foot { display: flex; align-items: center; gap: 10px; margin-top: 26px; font-size: 23px; }
+.tb-foot { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 26px; font-size: 23px; }
 .tb-count { font: 500 21px var(--mono); color: #8a8a8a; margin-right: auto; }
 .tb-skip { color: #777; margin-right: auto; }
 .tb-count:empty { display: none; }
@@ -395,6 +395,7 @@ kbd {
 .small-term pre { padding: 22px 26px; }
 .quote {
   margin: 0;
+  margin-top: 72px;
   font-size: 50px;
   font-weight: 650;
   letter-spacing: -0.02em;
@@ -403,8 +404,9 @@ kbd {
   border-left: 6px solid var(--lint);
 }
 
-.recipe { display: grid; grid-template-columns: 1fr 720px; gap: 72px; align-items: start; }
-.criteria { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 38px; }
+.recipe { display: flex; flex-direction: column; gap: 56px; margin-top: 64px; }
+.recipe-side { display: grid; grid-template-columns: 1fr 760px; gap: 72px; align-items: center; }
+.criteria { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 26px; }
 .criteria li { display: flex; gap: 28px; align-items: center; font-size: 40px; line-height: 1.22; font-weight: 500; }
 .criteria .n {
   flex: none;
@@ -463,7 +465,7 @@ kbd {
 /* ================================================================ test */
 
 .bars { display: flex; flex-direction: column; gap: 20px; }
-.bar-head, .bar-row { display: grid; grid-template-columns: 470px 1fr 1fr; gap: 28px; align-items: center; }
+.bar-head, .bar-row { display: grid; grid-template-columns: 540px 1fr 1fr; gap: 28px; align-items: center; }
 .bar-head { font: 600 22px var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 .bl { font-size: 32px; font-weight: 600; }
 .bv { position: relative; height: 72px; display: flex; align-items: center; gap: 16px; }

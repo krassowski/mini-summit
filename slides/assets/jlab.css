@@ -96,26 +96,28 @@
 }
 .jl.top .jl-left .jl-tabs { flex-direction: row; border-right: 0; border-bottom: 1px solid var(--jp-border-color1); }
 .jl-tab {
-  width: 33px;
-  height: 33px;
+  width: 32px;
+  height: 52px;
   display: grid;
   place-items: center;
   position: relative;
   flex: none;
 }
-.jl.top .jl-left .jl-tab { width: 52px; }
+.jl.top .jl-left .jl-tabs { align-items: flex-start; }
+.jl.top .jl-left .jl-tab { width: 52px; height: 28px; }
 .jl-tab.cur { background: var(--jp-layout-color1); }
-.jl-tab.cur::before {
+.jl-left .jl-tab.cur::after {
+  /* the current tab covers the border towards its panel, as in JupyterLab */
   content: '';
   position: absolute;
-  left: 0;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background: var(--jp-brand-color1);
+  right: -1px;
+  width: 1px;
+  background: var(--jp-layout-color1);
 }
-.jl.top .jl-left .jl-tab.cur::before { width: auto; right: 0; bottom: auto; height: 2px; }
-.jl-tab .jp { width: 18px; height: 18px; }
+.jl.top .jl-left .jl-tab.cur::after { display: none; }
+.jl-tab .jp { width: 20px; height: 20px; }
 
 .jl-panel {
   display: flex;

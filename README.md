@@ -21,7 +21,7 @@ Slides, data and sources for the talk by [Mike Krassowski](https://github.com/kr
 | Step | Project | What it gives you | Get it |
 | --- | --- | --- | --- |
 | Prototype | [Plugin Playground](https://github.com/jupyterlab/plugin-playground) 1.0 | Write a JupyterLab plugin in the browser, load it without a build, get help from AI, share it as a link, export it as a wheel or a zip. Runs in JupyterLite and on Binder. | `pip install jupyterlab-plugin-playground` |
-| Lint | [@jupyter/eslint-plugin](https://github.com/jupyterlab/eslint-plugin) 1.3 | 23 rules for mistakes that TypeScript cannot see: plugin structure, translations, memory leaks, UI tests, startup time. On by default in the extension template. | `npm i -D @jupyter/eslint-plugin` |
+| Lint | [@jupyter/eslint-plugin](https://github.com/jupyterlab/eslint-plugin) 1.3 | 23 rules for mistakes that TypeScript cannot see: plugin structure, translations, memory leaks, UI tests, startup time. On by default in the extension template. | `jlpm add -D @jupyter/eslint-plugin` |
 | Build | [jupyter-builder](https://github.com/jupyterlab/jupyter-builder) 1.2 | Build extensions without installing JupyterLab, with Rspack. Build fixes ship on their own schedule. | `pip install jupyter-builder` |
 | Test | [JupyterLab UI tests](https://github.com/jupyterlab/jupyterlab/tree/main/galata) | A full run takes 15 minutes instead of 55, gives the same pixels on a laptop as on CI, updates reference images on a comment, and shows the report in the browser. | Actions in [jupyterlab/maintainer-tools](https://github.com/jupyterlab/maintainer-tools) |
 
