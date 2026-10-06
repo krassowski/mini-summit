@@ -8,6 +8,8 @@ Slides: [krassowski.github.io/mini-summit](https://krassowski.github.io/mini-sum
 
 > JupyterLab 4.6 was one of the largest minor releases with the new features propagating to Jupyter Notebook 7.6 and JupyterLite 0.8. This session will first highlight a few new features and enhancements, highlighting what those mean for users and extension authors, and then turns to the four Jupyter Foundation-funded projects that enabled the higher than before pace: jupyter-builder, @jupyter/eslint-plugin, revamped UI tests, and plugin playground. The tooling and principles behind it are reusable and might be of interest to audience behind the Jupyter ecosystem.
 
+<a href="https://krassowski.github.io/mini-summit/"><img width="2377" height="1104" alt="Image" src="https://github.com/user-attachments/assets/1e6b45cb-d22f-4f25-aa84-4119a4f1ef76" /></a>
+
 ## Summary
 
 - JupyterLab 4.6 brought 68 new features and enhancements, 97 bug fixes, 38 documentation improvements and a record 171 maintenance tasks, from 95 contributors (39 of them first-time).
